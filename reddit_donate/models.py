@@ -3,7 +3,15 @@ import json
 from pycassa import types
 
 from r2.lib.db import tdb_cassandra
-from r2.lib.utils import Storage
+
+
+class Organization(object):
+    def __init__(self, data):
+        self.data = data
+
+    @property
+    def _id36(self):
+        return self.data["EIN"]
 
 
 class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
@@ -21,16 +29,21 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
         return json.dumps({})
 
     @classmethod
-    def nominate(cls, account, organization_data):
-        org = Storage(organization_data)
-        org._id36 = organization_data["EIN"]
-        cls.create(account, [org])
+    def has_nominated(cls, account, organization):
+        try:
+            cls.fast_query(account, organization)
+        except tdb_cassandra.NotFound:
+            return False
+        else:
+            return True
 
     @classmethod
-    def unnominate(cls, account, organization_data):
-        org = Storage(organization_data)
-        org._id36 = organization_data["EIN"]
-        cls.destroy(account, [org])
+    def nominate(cls, account, organization):
+        cls.create(account, [organization])
+
+    @classmethod
+    def unnominate(cls, account, organization):
+        cls.destroy(account, [organization])
 
 
 class DonationOrganization(tdb_cassandra.Thing):
@@ -49,7 +62,7 @@ class DonationOrganization(tdb_cassandra.Thing):
     @classmethod
     def byEIN(cls, ein):
         org_row = cls._byID(ein)
-        return json.loads(org_row.data)
+        return Organization(json.loads(org_row.data))
 
 
 class DonationOrganizationsByPrefix(tdb_cassandra.View):

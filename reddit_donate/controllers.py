@@ -75,7 +75,6 @@ class DonateController(RedditController):
             organization,
         )
 
-    @pagecache_policy(PAGECACHE_POLICY.LOGGEDIN_AND_LOGGEDOUT)
     @json_validate(
         organization=VOrganization("organization"),
     )
@@ -86,7 +85,13 @@ class DonateController(RedditController):
                                 errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 
-        return organization
+        has_nominated = False
+        if c.user_is_loggedin:
+            has_nominated = DonationNominationsByAccount.has_nominated(
+                c.user, organization)
+        organization.data["Nominated"] = has_nominated
+
+        return organization.data
 
     @pagecache_policy(PAGECACHE_POLICY.LOGGEDIN_AND_LOGGEDOUT)
     @json_validate(
