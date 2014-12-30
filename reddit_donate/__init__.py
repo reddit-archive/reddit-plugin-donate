@@ -26,6 +26,20 @@ class Donate(Plugin):
 
     def add_routes(self, mc):
         mc(
+            "/donate/organizations/:organization",
+            controller="donate",
+            action="organization",
+            conditions={"function": not_in_sr},
+        )
+
+        mc(
+            "/donate/organizations",
+            controller="donate",
+            action="search",
+            conditions={"function": not_in_sr},
+        )
+
+        mc(
             "/donate",
             controller="donate",
             action="landing",
