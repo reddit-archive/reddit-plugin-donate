@@ -61,6 +61,20 @@ class DonateController(RedditController):
             organization,
         )
 
+    @validatedForm(
+        VUser(),
+        VModhash(),
+        organization=VOrganization("organization"),
+    )
+    def POST_unnominate(self, form, jquery, organization):
+        if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
+            return
+
+        DonationNominationsByAccount.unnominate(
+            c.user,
+            organization,
+        )
+
     @pagecache_policy(PAGECACHE_POLICY.LOGGEDIN_AND_LOGGEDOUT)
     @json_validate(
         organization=VOrganization("organization"),

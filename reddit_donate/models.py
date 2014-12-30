@@ -26,6 +26,12 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
         org._id36 = organization_data["EIN"]
         cls.create(account, [org])
 
+    @classmethod
+    def unnominate(cls, account, organization_data):
+        org = Storage(organization_data)
+        org._id36 = organization_data["EIN"]
+        cls.destroy(account, [org])
+
 
 class DonationOrganization(tdb_cassandra.Thing):
     _use_db = True
