@@ -77,7 +77,8 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
         types.UTF8Type(),
     )
     _extra_schema_creation_args = {
-        "default_validation_class": "LongType",
+        "key_validation_class": "UTF8Type",
+        "default_validation_class": "UTF8Type",
     }
 
     @classmethod
@@ -87,5 +88,4 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
             results = cls._cf.get(stripped, column_count=25)
         except tdb_cassandra.NotFound:
             return []
-        return [(ein, display_name)
-                for (score, display_name), ein in results.iteritems()]
+        return [json.loads(data) for key, data in results.iteritems()]

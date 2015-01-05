@@ -44,4 +44,4 @@ def load_charity_data(csv_filename):
             display_name = row["DisplayName"]
 
             for prefix in _generate_prefixes(display_name):
-                prefix_batch.insert(prefix, {(rating, display_name): ein})
+                prefix_batch.insert(prefix, {(rating, display_name): serialized})
