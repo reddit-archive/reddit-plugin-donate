@@ -2,11 +2,7 @@ from pylons import c
 from pylons.i18n import _
 
 from r2.controllers import add_controller
-from r2.controllers.reddit_base import (
-    pagecache_policy,
-    PAGECACHE_POLICY,
-    RedditController,
-)
+from r2.controllers.reddit_base import RedditController
 from r2.lib.errors import errors
 from r2.lib.validator import (
     json_validate,
@@ -26,6 +22,20 @@ from reddit_donate.models import (
 
 
 NOMINATION_COOLDOWN = 15  # seconds
+
+
+def inject_nomination_status(organizations):
+    nominations = {}
+    if c.user_is_loggedin:
+        nominations = DonationNominationsByAccount.fast_query(
+            c.user, organizations)
+
+    wrapped = []
+    for org in organizations:
+        data = org.data.copy()
+        data["Nominated"] = (c.user, org) in nominations
+        wrapped.append(data)
+    return wrapped
 
 
 @add_controller
@@ -93,15 +103,9 @@ class DonateController(RedditController):
                                 errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 
-        has_nominated = False
-        if c.user_is_loggedin:
-            has_nominated = DonationNominationsByAccount.has_nominated(
-                c.user, organization)
-        organization.data["Nominated"] = has_nominated
+        wrapped = inject_nomination_status([organization])
+        return wrapped[0]
 
-        return organization.data
-
-    @pagecache_policy(PAGECACHE_POLICY.LOGGEDIN_AND_LOGGEDOUT)
     @json_validate(
         prefix=VLength("prefix", min_length=3, max_length=100),
     )
@@ -111,4 +115,5 @@ class DonateController(RedditController):
         if responder.has_errors("prefix", errors.TOO_LONG, errors.TOO_SHORT):
             return
 
-        return DonationOrganizationsByPrefix.byPrefix(prefix)
+        organizations = DonationOrganizationsByPrefix.byPrefix(prefix)
+        return inject_nomination_status(organizations)

@@ -2,6 +2,7 @@ import json
 
 from pycassa import types
 
+from r2.lib import utils
 from r2.lib.db import tdb_cassandra
 
 
@@ -10,8 +11,12 @@ class Organization(object):
         self.data = data
 
     @property
+    def _id(self):
+        return self.data["EIN"]
+
+    @property
     def _id36(self):
-        return str(self.data["EIN"])
+        return utils.to36(self._id)
 
 
 class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
@@ -27,15 +32,6 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
     def value_for(cls, thing1, thing2):
         # TODO: store relevant details of the nomination here
         return json.dumps({})
-
-    @classmethod
-    def has_nominated(cls, account, organization):
-        try:
-            cls.fast_query(account, organization)
-        except tdb_cassandra.NotFound:
-            return False
-        else:
-            return True
 
     @classmethod
     def nominate(cls, account, organization):
@@ -95,4 +91,4 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
             results = cls._cf.get(stripped, column_count=150)
         except tdb_cassandra.NotFound:
             return []
-        return [json.loads(data) for key, data in results.iteritems()]
+        return [Organization(json.loads(data)) for key, data in results.iteritems()]
