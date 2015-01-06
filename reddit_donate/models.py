@@ -1,6 +1,7 @@
 import json
 
 from pycassa import types
+from pycassa.cassandra.ttypes import NotFoundException
 
 from r2.lib import utils
 from r2.lib.db import tdb_cassandra
@@ -109,6 +110,6 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
         stripped = prefix.strip()
         try:
             results = cls._cf.get(stripped, column_count=MAX_COLUMNS)
-        except tdb_cassandra.NotFound:
+        except NotFoundException:
             return []
         return [Organization(json.loads(data)) for key, data in results.iteritems()]
