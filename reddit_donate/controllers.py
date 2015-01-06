@@ -17,6 +17,7 @@ from reddit_donate import pages
 from reddit_donate.validators import VOrganization
 from reddit_donate.models import (
     DonationNominationsByAccount,
+    DonationOrganization,
     DonationOrganizationsByPrefix,
 )
 
@@ -24,11 +25,14 @@ from reddit_donate.models import (
 NOMINATION_COOLDOWN = 15  # seconds
 
 
-def inject_nomination_status(organizations):
+def inject_nomination_status(organizations, assume_nominated=False):
     nominations = {}
     if c.user_is_loggedin:
-        nominations = DonationNominationsByAccount.fast_query(
-            c.user, organizations)
+        if not assume_nominated:
+            nominations = DonationNominationsByAccount.fast_query(
+                c.user, organizations)
+        else:
+            nominations = {(c.user, org): True for org in organizations}
 
     wrapped = []
     for org in organizations:
@@ -117,3 +121,12 @@ class DonateController(RedditController):
 
         organizations = DonationOrganizationsByPrefix.byPrefix(prefix)
         return inject_nomination_status(organizations)
+
+    @json_validate(
+        VUser(),
+    )
+    def GET_nominations(self, responder):
+        nominated_org_ids = DonationNominationsByAccount.get_for(c.user)
+        orgs = DonationOrganization.byEIN(nominated_org_ids)
+        wrapped = inject_nomination_status(orgs, assume_nominated=True)
+        return wrapped

@@ -40,6 +40,13 @@ class Donate(Plugin):
         )
 
         mc(
+            "/donate/nominations",
+            controller="donate",
+            action="nominations",
+            conditions={"function": not_in_sr},
+        )
+
+        mc(
             "/donate",
             controller="donate",
             action="landing",

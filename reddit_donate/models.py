@@ -6,6 +6,9 @@ from r2.lib import utils
 from r2.lib.db import tdb_cassandra
 
 
+MAX_COLUMNS = 150
+
+
 class Organization(object):
     def __init__(self, data):
         self.data = data
@@ -44,9 +47,18 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
     @classmethod
     def count(cls, account):
         try:
-            return cls._cf.get_count(account._id36, max_count=150)
+            return cls._cf.get_count(account._id36, max_count=MAX_COLUMNS)
         except tdb_cassandra.NotFound:
             return 0
+
+    @classmethod
+    def get_for(cls, account):
+        try:
+            columns = cls._cf.get(account._id36, column_count=MAX_COLUMNS)
+        except tdb_cassandra.NotFound:
+            return []
+        else:
+            return [int(ein, 36) for ein, data in columns.iteritems()]
 
 
 class DonationOrganization(tdb_cassandra.Thing):
@@ -62,10 +74,18 @@ class DonationOrganization(tdb_cassandra.Thing):
         "default_validation_class": "UTF8Type",
     }
 
+    def _to_organization(self):
+        return Organization(json.loads(self.data))
+
     @classmethod
-    def byEIN(cls, ein):
-        org_row = cls._byID(ein)
-        return Organization(json.loads(org_row.data))
+    def byEIN(cls, ein_or_eins):
+        eins, is_single = utils.tup(ein_or_eins, ret_is_single=True)
+        org_row_or_rows = cls._byID(ein_or_eins)
+        if not is_single:
+            return [org_row._to_organization()
+                    for org_row in org_row_or_rows.itervalues()]
+        else:
+            return org_row_or_rows._to_organization()
 
 
 class DonationOrganizationsByPrefix(tdb_cassandra.View):
@@ -88,7 +108,7 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
     def byPrefix(cls, prefix):
         stripped = prefix.strip()
         try:
-            results = cls._cf.get(stripped, column_count=150)
+            results = cls._cf.get(stripped, column_count=MAX_COLUMNS)
         except tdb_cassandra.NotFound:
             return []
         return [Organization(json.loads(data)) for key, data in results.iteritems()]
