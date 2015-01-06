@@ -11,7 +11,7 @@ class Organization(object):
 
     @property
     def _id36(self):
-        return self.data["EIN"]
+        return str(self.data["EIN"])
 
 
 class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):

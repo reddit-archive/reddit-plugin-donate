@@ -23,6 +23,13 @@ def _generate_prefixes(display_name):
                 yield unstopped[:prefix_len]
 
 
+def _coerce_values(mapping, function, keys):
+    for key in keys:
+        value = mapping.get(key)
+        if value:
+            mapping[key] = function(value)
+
+
 def load_charity_data(csv_filename):
     reader = csv.DictReader(open(csv_filename))
 
@@ -33,15 +40,20 @@ def load_charity_data(csv_filename):
         if i % 10000 == 0:
             print("{: 5.2%} progress".format(i / 1497802))
 
-        ein = int(row["EIN"])
+        # coerce various values from the csv
+        row = {k: unicode(v, "utf-8") for k, v in row.iteritems()}
+        _coerce_values(row, int, ["EIN"])
+        _coerce_values(row, float,
+            ["OverallScore", "OverallRtg", "ATScore", "ATRtg"])
+
         serialized = json.dumps(row)
-        org_batch.insert(ein, {"data": serialized})
+        org_batch.insert(row["EIN"], {"data": serialized})
 
         # we only do autocomplete for rated orgs as the master list has a huge
         # huge huge number of duplicate names etc.
         if row["OrgID"]:
-            rating = float(row["OverallScore"] or "0")
+            score = row["OverallScore"] or 0
             display_name = row["DisplayName"]
 
             for prefix in _generate_prefixes(display_name):
-                prefix_batch.insert(prefix, {(rating, display_name): serialized})
+                prefix_batch.insert(prefix, {(score, display_name): serialized})
