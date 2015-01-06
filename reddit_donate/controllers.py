@@ -31,7 +31,15 @@ NOMINATION_COOLDOWN = 15  # seconds
 @add_controller
 class DonateController(RedditController):
     def GET_landing(self):
-        content = pages.DonateLanding()
+        if c.user_is_loggedin:
+            nomination_count = DonationNominationsByAccount.count(c.user)
+        else:
+            nomination_count = None
+
+        content = pages.DonateLanding(
+            nomination_count=nomination_count,
+        )
+
         return pages.DonatePage(
             title=_("reddit donate"),
             content=content,

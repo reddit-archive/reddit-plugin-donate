@@ -45,6 +45,13 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
     def unnominate(cls, account, organization):
         cls.destroy(account, [organization])
 
+    @classmethod
+    def count(cls, account):
+        try:
+            return cls._cf.get_count(account._id36, max_count=150)
+        except tdb_cassandra.NotFound:
+            return 0
+
 
 class DonationOrganization(tdb_cassandra.Thing):
     _use_db = True
