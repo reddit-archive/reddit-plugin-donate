@@ -85,7 +85,7 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
     def byPrefix(cls, prefix):
         stripped = prefix.strip()
         try:
-            results = cls._cf.get(stripped, column_count=25)
+            results = cls._cf.get(stripped, column_count=150)
         except tdb_cassandra.NotFound:
             return []
         return [json.loads(data) for key, data in results.iteritems()]
