@@ -16,6 +16,8 @@ class Donate(Plugin):
     errors = {
         "DONATE_UNKNOWN_ORGANIZATION":
             N_("unknown organization"),
+        "DONATE_ACCOUNT_NOT_ELIGIBLE":
+            N_("account not old enough"),
     }
 
     js = {

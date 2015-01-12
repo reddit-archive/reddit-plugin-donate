@@ -6,6 +6,7 @@ from r2.controllers.reddit_base import RedditController
 from r2.lib.errors import errors
 from r2.lib.validator import (
     json_validate,
+    validate,
     validatedForm,
     VLength,
     VModhash,
@@ -14,7 +15,7 @@ from r2.lib.validator import (
 )
 
 from reddit_donate import pages
-from reddit_donate.validators import VOrganization
+from reddit_donate.validators import VAccountEligible, VOrganization
 from reddit_donate.models import (
     DonationNominationsByAccount,
     DonationOrganization,
@@ -44,7 +45,10 @@ def inject_nomination_status(organizations, assume_nominated=False):
 
 @add_controller
 class DonateController(RedditController):
-    def GET_landing(self):
+    @validate(
+        eligible=VAccountEligible(),
+    )
+    def GET_landing(self, eligible):
         if c.user_is_loggedin:
             nomination_count = DonationNominationsByAccount.count(c.user)
         else:
@@ -52,6 +56,7 @@ class DonateController(RedditController):
 
         content = pages.DonateLanding(
             nomination_count=nomination_count,
+            eligible=eligible,
         )
 
         return pages.DonatePage(
@@ -64,9 +69,13 @@ class DonateController(RedditController):
         VModhash(),
         VRatelimit(rate_user=True, prefix="donate_nominate_"),
         organization=VOrganization("organization"),
+        eligible=VAccountEligible(),
     )
-    def POST_nominate(self, form, jquery, organization):
+    def POST_nominate(self, form, jquery, organization, eligible):
         if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
+            return
+
+        if form.has_errors("eligible", errors.DONATE_ACCOUNT_NOT_ELIGIBLE):
             return
 
         if form.has_errors("ratelimit", errors.RATELIMIT):
