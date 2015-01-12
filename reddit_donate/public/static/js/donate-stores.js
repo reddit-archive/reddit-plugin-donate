@@ -1,0 +1,179 @@
+!function(r, Flux, _) {
+  var searchResults = new Flux.Store({
+    getDefaultState: function() {
+      return {
+        query: '',
+        queryType: 'name',
+        list: [],
+      };
+    },
+
+    receive: function(payload) {
+      switch (payload.actionType) {
+        case 'update-search-results':
+          this.setState({
+            query: payload.query,
+            queryType: payload.queryType,
+            list: payload.results,
+          });
+        break;
+      }
+    },
+  });
+
+  var nominated = new Flux.Store({
+    getDefaultState: function() {
+      return {
+        unloadedCount: window.unloadedNominations | 0,
+        list: [],
+      };
+    },
+
+    receive: function(payload) {
+      switch (payload.actionType) {
+        case 'update-nominated':
+          this.setState({
+            list: payload.nominations,
+            unloadedCount: 0,
+          });
+        break;
+        case 'remove-nomination':
+          var ein = payload.ein;
+
+          var charity = charityData.state.byEIN[ein];
+          var nominations = this.state.list;
+          var unloadedCount = this.state.unloadedCount;
+
+          if (charity && charity.Nominated) {
+            charity.Nominated = false;
+
+            if (unloadedCount) {
+              this.setState({
+                unloadedCount: unloadedCount - 1,
+              });
+            } else {
+              nominations.splice(nominations.indexOf(charity), 1);
+              this.setState({
+                list: nominations,
+              });
+            }
+          } else {
+            // what happened here?
+            this.forceUpdate();
+          }
+        break;
+        case 'nominate-charity':
+          var ein = payload.ein;
+
+          var charity = charityData.state.byEIN[ein];
+          var nominations = this.state.list;
+          var unloadedCount = this.state.unloadedCount;
+
+          if (charity && !charity.Nominated) {
+            charity.Nominated = true;
+
+            if (unloadedCount) {
+              this.setState({
+                unloadedCount: unloadedCount + 1,
+              });
+            } else {
+              nominations.push(charity);
+              this.setState({
+                list: nominations,
+              });
+            }
+          } else {
+            // what happened here?
+            this.forceUpdate();
+          }
+        break;
+      }
+    },
+  });
+
+  var charityData = new Flux.Store({
+    getInitialState: function() {
+      return {
+        byEIN: {},
+      };
+    },
+
+    getCharityDataByEin: function(/* sources */) {
+      var sources = _.toArray(arguments);
+      var cache = {};
+
+      sources.forEach(function(source) {
+        source.state.list.reduce(function(cache, data) {
+          cache[data.EIN] = data;
+          return cache;
+        }, cache);
+      });
+
+      return cache;
+    },
+
+    receive: function(payload) {
+      switch (payload.actionType) {
+        case 'update-nominated':
+        case 'update-search-results':
+          this.setState({
+            byEIN: this.getCharityDataByEin(searchResults, nominated),
+          });
+        break;
+      }
+    },
+  });
+
+  var typeAheadSuggest = new Flux.Store({
+    getDefaultState: function() {
+      return {
+        suggestion: null,
+      };
+    },
+
+    receive: function(payload) {
+      switch(payload.actionType) {
+        case 'update-search-results':
+          var suggestion = payload.results.length ? payload.results[0].DisplayName : null;
+
+          this.setState({
+            suggestion: suggestion,
+          });
+        break;
+      }
+    }
+  })
+
+  var viewType = new Flux.Store({
+    getDefaultState: function() {
+      return {
+        // one of ['search', 'nominated']
+        viewing: 'search',
+      };
+    },
+
+    receive: function(payload) {
+      switch (payload.actionType) {
+        case 'set-view-type':
+          this.setState({
+            viewing: payload.viewing,
+          });
+        break;
+        case 'update-nominated':
+          this.setState({
+            viewing: 'nominations',
+          });
+        break;
+      }
+    },
+  });
+
+  r.donate = r.donate || {};
+  r.donate.stores = {
+    nominated: nominated,
+    searchResults: searchResults,
+    charityData: charityData,
+    typeAheadSuggest: typeAheadSuggest,
+    viewType: viewType,
+  };
+}(r, Flux, _);

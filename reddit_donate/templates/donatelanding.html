@@ -1,3 +1,70 @@
-i am a template
+<%!
+  import simplejson
 
-you have made ${thing.nomination_count} nominations!
+  from r2.lib import js
+%>
+
+<script>
+  var unloadedNominations = ${thing.nomination_count};
+  var accountIsEligible = ${simplejson.dumps(thing.eligible)};
+</script>
+
+<header class="reddit-donate-header">
+  <div class="header-content">
+    <h2>reddit donate</h2>
+    <div class="subtitle">phase 1: charity nomination</div>
+
+    <%
+    blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
+    %>
+
+    %if not c.user_is_loggedin:
+      <p>
+        You must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before February 28, 2014</strong>
+        &#32;to participate in the nomination process!
+      </p>
+      <p>
+        Check out the&#32;<a href="${blog_post_url}">announcement blog post</a>&#32;
+        and&#32;<a href="/r/redditdonate2014">join the discussion on reddit.</a>
+      </p>
+    %elif thing.eligible:
+      <p>
+        use the field below to find charities to nominate for
+        &#32;<a href="${blog_post_url}">reddit’s decimation giveaway.</a>
+      </p>
+      <p>
+        you may nominate as many charities as you want!
+        &#32;<a href="/r/redditdonate2014">join the discussion on reddit.</a>
+      </p>
+    %else:
+      <p>
+        Sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before</em>&#32;the
+        &#32;<a href="${blog_post_url}">announcement blog post</a>&#32;are
+        eligible to nominate charities.
+      </p>
+      <p>
+        You can still participate by &#32;<a href="/r/redditdonate2014">joining
+        the discussion on reddit!</a>
+      </p>
+    %endif
+
+    <div class="background-snoos-graphic"></div>
+    <div id="reddit-donate-counter">
+      ## react mount point for nomination counter
+    </div>
+    <div class="foreground-snoos-graphic"></div>
+  </div>
+</header>
+
+<div class="reddit-donate-body">
+  <div id="reddit-donate-search">
+    ## react mount point for search input
+  </div>
+  <div id="reddit-donate-display">
+    ## react mount point for search results
+  </div>
+</div>
+
+${unsafe(js.use('donate'))}
+
+

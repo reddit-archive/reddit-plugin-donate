@@ -22,7 +22,13 @@ class Donate(Plugin):
 
     js = {
         "donate": LocalizedModule("donate.js",
-            # TODO: fill me with code
+            "lib/react-with-addons-0.11.2.js",
+            "lib/flux.js",
+            "flux.store.js",
+            "donate-base.js",
+            "donate-stores.js",
+            "donate-views.js",
+            "donate.js",
         ),
     }
 

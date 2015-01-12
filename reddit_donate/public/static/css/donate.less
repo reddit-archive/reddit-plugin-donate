@@ -1,0 +1,490 @@
+@import "markdown.less";
+@import "components/mixins.less";
+
+
+// button styling from advertising page
+.button-background-style(@color) {
+  .linear-gradient(@color, darken(@color, 5%));
+  border-color: darken(@color, 15%);
+}
+
+.button-style(@button-color, @button-text-color) {
+  .button-background-style(@button-color);
+
+  color: lighten(@button-text-color, 5%);
+
+  &:hover {
+    .button-background-style(lighten(@button-color, 5%));
+  }
+}
+
+.button {
+  @unit: 0.7692307692307693em;
+
+  .button-style(darken(@white, 5%), @semi-black);
+
+  display: inline-block;
+  margin: 0;
+  padding: 0 (@unit * 2);
+  font-size: 1em;
+  font-weight: bold;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+  line-height: @unit * 4;
+
+  &:focus {
+    outline: 0;
+    box-shadow: inset 0 0 0 1px fadeout(white, 65%);
+  }
+
+  &:active {
+    box-shadow: inset 0 1px 1px 1px fadeout(black, 90%);
+  }
+}
+
+
+// some resets
+body {
+  background: @off-white;
+}
+
+a {
+  cursor: pointer;
+}
+
+.content {
+  margin: 0;
+  position: relative;
+}
+
+.donate-icon {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+
+  .button & {
+    vertical-align: middle;
+  }
+}
+
+
+.reddit-donate-header .header-content,
+.reddit-donate-search {
+  max-width: 1024px;
+  width: 1024px;
+}
+
+@media (max-width: 1024px) {
+  .reddit-donate-header,
+  .reddit-donate-search {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+
+.reddit-donate-header {
+  &:extend(.md-container all);
+
+  @src: url(../tiling-snoo-background.png);
+  @src-2x: url(../tiling-snoo-background-2x.png);
+
+  .hdpi-bg-image(@src, @src-2x, ~"308px 131px", repeat-x);
+
+  background-color: @white;
+  background-position: 50% -25px;
+  border-bottom: 4px solid @eggshell;
+  overflow: auto;
+}
+
+.reddit-donate-header .header-content {
+  &:extend(.md all);
+
+  @font-base: @font-small;
+  @line-base: @line-small;
+
+  margin: (@margin-xx-large * 2px) auto;
+  position: relative;
+
+  h2 {
+    @src: url(../reddit_donate_logo.png);
+    @src-2x: url(../reddit_donate_logo-2x.png);
+    @width: 265px;
+    @height: 60px;
+
+    .hdpi-bg-image(@src, @src-2x);
+
+    display: block;
+    font-size: 0 !important;
+    height: 0;
+    overflow: hidden;
+    padding: 0 @width @height 0;
+    width: 0;
+  }
+
+  .subtitle {
+    .md-font-size(@font-base, @font-xx-large, @line-xx-large);
+    .md-margins(@font-xx-large, 0, @margin-x-large);
+
+    color: @text-grey;
+    font-weight: normal;
+  }
+
+  p {
+    .md-font-size(@font-base, @font-base, @line-medium);
+    max-width: 60%;
+  }
+}
+
+.reddit-donate-nominations {
+  background: @white;
+  border: 3px solid @orangered;
+  border-radius: 0;
+  box-sizing: border-box;
+  font-size: small;
+  height: 100px;
+  padding-top: 2em;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 280px;
+
+  strong {
+    display: block;
+  }
+}
+
+.background-snoos-graphic {
+  @src: url(../background-snoos.png);
+  @src-2x: url(../background-snoos-2x.png);
+  @width: 532px;
+  @height: 100px;
+
+  .hdpi-bg-image(@src, @src-2x);
+
+  height: @height;
+  pointer-events: none;
+  position: absolute;
+  right: -50px;
+  top: 10px;
+  width: @width;
+}
+
+.foreground-snoos-graphic {
+  @src: url(../foreground-snoos.png);
+  @src-2x: url(../foreground-snoos-2x.png);
+  @width: 400px;
+  @height: 138px;
+
+  .hdpi-bg-image(@src, @src-2x);
+
+  height: @height;
+  pointer-events: none;
+  position: absolute;
+  right: -15px;
+  top: 40px;
+  width: @width;
+}
+
+
+.reddit-donate-body {
+  background-attachment: fixed;
+  background-color: @off-white;
+  background-position: center top;
+  background-repeat: repeat;
+  min-height: 300px;
+  overflow: auto;
+  padding-bottom: (@margin-large * 1px);
+  padding-top: (@margin-xxx-large * 1px);
+}
+
+.reddit-donate-search {
+  -webkit-align-items: center;
+  align-items: center;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0 auto (@margin-small * 1px);
+
+  input, button {
+    box-sizing: border-box;
+  }
+
+  button {
+    -webkit-flex: 0 0 100px;
+    flex: 0 0 100px;
+  }
+
+  .search-input-group {
+    -webkit-flex: 1 0;
+    flex: 1 0;
+    height: 40px;
+    margin-right: 20px;
+    position: relative;
+
+    input {
+      -webkit-appearance: none;
+      border: 1px solid darken(@eggshell, 10%);
+      font-size: 16px;
+      height: 40px;
+      left: 0;
+      line-height: 20px;
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .search-input {
+      background: transparent;
+      color: @semi-black;
+      z-index: 100;
+    }
+
+    .search-input-typeahead {
+      color: lighten(@text-grey, 20%);
+      z-index: 50;
+      pointer-events: none;
+    }
+  }
+
+  .search-button {
+    font-size: 1.3em;
+
+    &.manual {
+      .button-style(darken(@green, 5%), @off-white);
+    }
+  }
+}
+
+.search-input-subtext,
+.no-search-results .message {
+  &:extend(.md all);
+
+  color: @text-grey;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-input-subtext {
+  padding-bottom: (@margin-small * 1px);
+  border-bottom: 3px solid @pale-grey;
+  margin: 0 auto (@margin-small * 1px);
+
+  a {
+    margin-left: (@margin-small * 1px);
+  }
+}
+
+.no-search-results .message {
+  font-family: 'helvetica neue', 'helvetica', 'arial', 'sans-serif';
+  font-size: (@font-xxx-large * 1px);
+  letter-spacing: 1px;
+  margin-top: (@margin-large * 1px);
+
+  small {
+    display: block;
+  }
+}
+
+.charity-card-list {
+  &:extend(.md-container all);
+
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+
+  > div {
+    -webkit-flex: 0 0 550px;
+    flex: 0 0 550px;
+  }
+}
+
+.charity-card {
+  &:extend(.md all);
+
+  @font-base: @font-small;
+  @line-base: @line-small;
+
+  background-color: @white;
+  border: 4px solid @eggshell;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  color: @text-grey;
+  font-family: Helvetica Neue;
+  margin: 2em;
+  min-height: 200px;
+  padding: (@margin-small * 1px) (@margin-large * 1px);
+  position: relative;
+
+  &.nominated {
+    @color: lighten(@orangered, 15%);
+
+    background: @white;
+    border-color: @color;
+    border-radius: 0;
+  }
+
+  &.unloaded {
+    background-color: @eggshell;
+
+    .charity-name {
+      color: lighten(@semi-black, 25%);
+    }
+  }
+
+  &.error {
+    background-color: lighten(@pale-grey, 10%);
+    border-color: @pale-grey;
+  }
+
+  .charity-name {
+    .md-font-size(@font-base, @font-xx-large, @line-xx-large);
+    .md-margins(@font-xx-large, @margin-x-small, @margin-x-small);
+
+    font-weight: 300;
+  }
+
+  .charity-tag-line {
+    .md-font-size(@font-base, @font-medium, @line-medium);
+  }
+
+  .charity-name,
+  .charity-tag-line {
+    margin-right: 150px;
+  }
+
+  .charity-meta {
+    .md-margins(@font-base, @margin-x-large, @margin-x-small);
+
+    border-left: 2px solid @pale-grey;
+    list-style-type: none;
+    padding-left: ((@margin-large - 2) * 1px);
+    padding-right: 200px;
+  }
+
+  .charity-nominate-button {
+    .md-font-size(@font-base, @font-base, @line-xxx-large);
+  }
+
+  .buttons {
+    bottom: (@margin-large * 1px);
+    position: absolute;
+    right: (@margin-large * 1px);
+    text-align: right;
+  }
+
+  .charity-rating {
+    position: absolute;
+    right: (@margin-large * 1px);
+    text-align: right;
+    top: (@margin-large * 1px);
+
+    .label {
+      .md-font-size(@font-base, @font-x-small, @font-x-small);
+      .md-margins(@font-base, 0, @margin-x-small);
+
+      color: lighten(@text-grey, 15%);
+      display: block;
+    }
+  }
+
+  .errors {
+    .md-margins(@font-base, @margin-small, @margin-x-small);
+  }
+}
+
+.charity-nominate-button {
+  &.nominated {
+    background: none;
+    border-color: transparent;
+
+    .button-text {
+      font-size: 1em !important;
+    }
+
+    .button-text-hover {
+      display: none;
+    }
+    .button-text-default {
+      display: inline;
+    }
+
+    &:hover {
+      .button-background-style(@white);
+
+      .button-text-hover {
+        display: inline;
+      }
+      .donate-icon,
+      .button-text-default {
+        display: none;
+      }
+    }
+  }
+}
+
+.charity-rating-star {
+  &:extend(.donate-icon all);
+
+  @src: data-uri('../charity_star-inactive.png');
+  @src-2x: data-uri('../charity_star-inactive-x2.png');
+
+  .hdpi-bg-image(@src, @src-2x);
+
+  margin-left: 2px;
+
+  &.active {
+    @src: data-uri('../charity_star-active.png');
+    @src-2x: data-uri('../charity_star-active-x2.png');
+
+    .hdpi-bg-image(@src, @src-2x);
+  }
+}
+
+.donate-icon.checkmark {
+  @src: data-uri('../charity_checkmark.png');
+  @src-2x: data-uri('../charity_checkmark-x2.png');
+
+  .hdpi-bg-image(@src, @src-2x);
+
+  .button & {
+    left: -5px;
+    position: relative;
+    top: -3px;
+  }
+}
+
+.givewell-recommended-badge {
+  &:extend(.donate-icon all);
+
+  @src: data-uri('../donate_givewell_2.png');
+  @src-2x: data-uri('../donate_givewell_2-2x.png');
+  @width: 25px;
+  @height: 35px;
+
+  .hdpi-bg-image(@src, @src-2x);
+
+  height: @height;
+  margin-left: 5px;
+  margin-top: -10px;
+  position: relative;
+  top: 10px;
+  width: @width;
+}
+
+.charity-card-animation-leave {
+  transition: opacity 0.3s;
+  opacity: 1;
+}
+
+.charity-card-animation-leave-active {
+  opacity: 0;
+}
