@@ -55,23 +55,26 @@ class DonateController(RedditController):
             nomination_count = None
 
         content = pages.DonateLanding(
-            nomination_count=nomination_count,
             eligible=eligible,
         )
 
         return pages.DonatePage(
             title=_("reddit donate"),
             content=content,
+            extra_js_config={
+                "unloadedNominations": nomination_count,
+                "accountIsEligible": eligible,
+            },
         ).render()
 
     @validatedForm(
         VUser(),
         VModhash(),
         VRatelimit(rate_user=True, prefix="donate_nominate_"),
+        VAccountEligible(),
         organization=VOrganization("organization"),
-        eligible=VAccountEligible(),
     )
-    def POST_nominate(self, form, jquery, organization, eligible):
+    def POST_nominate(self, form, jquery, organization):
         if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 

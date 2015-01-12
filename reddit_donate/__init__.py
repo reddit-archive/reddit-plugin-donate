@@ -17,12 +17,18 @@ class Donate(Plugin):
         "DONATE_UNKNOWN_ORGANIZATION":
             N_("unknown organization"),
         "DONATE_ACCOUNT_NOT_ELIGIBLE":
-            N_("account not old enough"),
+            N_("account must be created before 2/28/2014"),
     }
 
     js = {
         "donate": LocalizedModule("donate.js",
-            # TODO: fill me with code
+            "lib/react-with-addons-0.11.2.js",
+            "lib/flux.js",
+            "flux.store.js",
+            "donate-base.js",
+            "donate-stores.js",
+            "donate-views.js",
+            "donate.js",
         ),
     }
 

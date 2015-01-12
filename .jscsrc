@@ -1,0 +1,110 @@
+{
+  "disallowQuotedKeysInObjects": true,
+  "validateQuoteMarks": "'",
+  "disallowSpacesInFunctionExpression": {
+    "beforeOpeningRoundBrace": true
+  },
+  "disallowSpacesInFunctionDeclaration": {
+    "beforeOpeningRoundBrace": true
+  },
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
+  },
+  "requireSpacesInFunctionDeclaration": {
+    "beforeOpeningCurlyBrace": true
+  },
+  "requireParenthesesAroundIIFE": true,
+  "requireDotNotation": true,
+  "disallowMultipleVarDecl": true,
+  "requireCurlyBraces": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "try",
+    "catch"
+  ],
+  "disallowTrailingWhitespace": true,
+  "disallowMixedSpacesAndTabs": true,
+  "validateIndentation": 2,
+  "disallowSpaceAfterPrefixUnaryOperators": [
+    "++",
+    "--",
+    "+",
+    "-",
+    "~",
+    "!"
+  ],
+  "disallowSpaceBeforePostfixUnaryOperators": [
+    "++",
+    "--"
+  ],
+  "requireSpaceBeforeBinaryOperators": true,
+  "requireSpaceAfterBinaryOperators": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "validateLineBreaks": "LF",
+  "validateParameterSeparator": ", ",
+  "requireCommaBeforeLineBreak": true,
+  "requireTrailingComma": true,
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+  "requireCapitalizedConstructors": true,
+  "requireSpaceAfterKeywords": [
+      "do",
+      "for",
+      "if",
+      "else",
+      "switch",
+      "case",
+      "try",
+      "catch",
+      "void",
+      "while",
+      "with",
+      "return",
+      "typeof",
+      "function"
+  ],
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpacesInConditionalExpression": {
+    "afterTest": true,
+    "beforeConsequent": true,
+    "afterConsequent": true,
+    "beforeAlternate": true
+  },
+  "disallowSpacesInCallExpression": true,
+  "requireBlocksOnNewline": true,
+  "disallowEmptyBlocks": true,
+  "disallowSpacesInsideParentheses": true,
+  "requireSpacesInsideObjectBrackets": "all",
+  "disallowSpacesInsideArrayBrackets": "all",
+  "disallowSpaceAfterObjectKeys": true,
+  "requireSpaceBeforeObjectValues": true,
+  "requireOperatorBeforeLineBreak": [
+      "?",
+      "=",
+      "+",
+      "-",
+      "/",
+      "*",
+      "==",
+      "===",
+      "!=",
+      "!==",
+      ">",
+      ">=",
+      "<",
+      "<="
+  ],
+  "disallowKeywords": [
+    "with"
+  ],
+  "disallowMultipleLineStrings": true,
+  "disallowMultipleLineBreaks": true,
+  "disallowKeywordsOnNewLine": [
+    "else"
+  ],
+  "requireLineFeedAtFileEnd": true,
+  "disallowYodaConditions": true,
+  "requireSpaceAfterLineComment": true
+}
