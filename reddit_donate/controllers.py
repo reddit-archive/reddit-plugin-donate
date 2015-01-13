@@ -68,10 +68,10 @@ class DonateController(RedditController):
         VUser(),
         VModhash(),
         VRatelimit(rate_user=True, prefix="donate_nominate_"),
+        VAccountEligible(),
         organization=VOrganization("organization"),
-        eligible=VAccountEligible(),
     )
-    def POST_nominate(self, form, jquery, organization, eligible):
+    def POST_nominate(self, form, jquery, organization):
         if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 
