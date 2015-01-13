@@ -49,14 +49,14 @@ class DonationNominationsByAccount(tdb_cassandra.DenormalizedRelation):
     def count(cls, account):
         try:
             return cls._cf.get_count(account._id36, max_count=MAX_COLUMNS)
-        except tdb_cassandra.NotFound:
+        except NotFoundException:
             return 0
 
     @classmethod
     def get_for(cls, account):
         try:
             columns = cls._cf.get(account._id36, column_count=MAX_COLUMNS)
-        except tdb_cassandra.NotFound:
+        except NotFoundException:
             return []
         else:
             return [int(ein, 36) for ein, data in columns.iteritems()]
