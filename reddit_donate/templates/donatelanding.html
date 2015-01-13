@@ -5,8 +5,8 @@
 %>
 
 <script>
-  var unloadedNominations = ${thing.nomination_count};
-  var accountIsEligible = ${simplejson.dumps(thing.eligible)};
+  r.config.unloadedNominations = ${thing.nomination_count};
+  r.config.accountIsEligible = ${simplejson.dumps(thing.eligible)};
 </script>
 
 <header class="reddit-donate-header">

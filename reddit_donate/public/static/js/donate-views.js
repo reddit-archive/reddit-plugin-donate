@@ -18,7 +18,7 @@
   var MIN_QUERY_LENGTH = 3;
   var EIN_QUERY_CHECK = /^[0-9]{3}/;
   var LOGGED_IN = r.config.logged;
-  var ACCOUNT_IS_ELIGIBLE = window.accountIsEligible;
+  var ACCOUNT_IS_ELIGIBLE = r.config.accountIsEligible;
   var SEARCH_DEBOUNCE_TIME = 500;
 
 
