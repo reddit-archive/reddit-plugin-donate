@@ -7,7 +7,7 @@ from reddit_donate import models
 
 
 MIN_PREFIX_LEN = 3
-STOP_WORDS = ["the"]
+STOP_WORDS = ["the "]
 
 
 def _generate_prefixes(display_name):
