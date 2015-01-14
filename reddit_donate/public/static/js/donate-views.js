@@ -486,7 +486,12 @@
 
         var searching = viewType.state.viewing === 'search';
         var autoComplete = queryType === 'name';
-
+        var returnToSearchLink = null;
+        var searchButtonClasses = React.addons.classSet({
+          'search-button button': true,
+          'auto': autoComplete,
+          'manual': !autoComplete,
+        });
         var subTextClasses = React.addons.classSet({
           'search-input-subtext': true,
           'viewing-nominated': !searching,
@@ -494,6 +499,7 @@
         });
         var subTextKey = 'results-by-' + queryType;
         var subText;
+
 
         if (!searching) {
           subText = r._('viewing your %(nominations)s nominations').format({
@@ -510,11 +516,11 @@
           });
         }
 
-        var searchButtonClasses = React.addons.classSet({
-          'search-button button': true,
-          'auto': autoComplete,
-          'manual': !autoComplete,
-        });
+        if (!searching) {
+          returnToSearchLink = A({ onClick: this.viewSearch },
+            r._('back to search')
+          );
+        }
 
         return Div(null,
           Div({
@@ -553,9 +559,7 @@
                 key: subTextKey,
               },
               subText,
-              !searching ? A({ onClick: this.viewSearch },
-                r._('back to search')
-              ) : null
+              returnToSearchLink
             )
           )
         );
