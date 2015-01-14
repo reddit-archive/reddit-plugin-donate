@@ -55,13 +55,16 @@ class DonateController(RedditController):
             nomination_count = None
 
         content = pages.DonateLanding(
-            nomination_count=nomination_count,
             eligible=eligible,
         )
 
         return pages.DonatePage(
             title=_("reddit donate"),
             content=content,
+            extra_js_config={
+                "unloadedNominations": nomination_count,
+                "accountIsEligible": eligible,
+            },
         ).render()
 
     @validatedForm(
