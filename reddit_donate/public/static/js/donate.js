@@ -1,4 +1,6 @@
-!(function(React, Flux, r, $) {
+;(function(React, Flux, r, $) {
+  'use strict';
+
   // instantiate global dispatcher
   var donateDispatcher = new Flux.Dispatcher();
 
@@ -32,4 +34,4 @@
       document.getElementById('reddit-donate-counter')
     );
   });
-})(React, Flux, r, jQuery);
+})(window.React, window.Flux, window.r, window.jQuery);

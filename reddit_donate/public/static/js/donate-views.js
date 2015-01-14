@@ -1,4 +1,6 @@
-!function(React, Flux, r, $, _) {
+;(function(React, Flux, r, $, _) {
+  'use strict';
+
   // import react elements for brevity in the render methods
   var A = React.DOM.a;
   var Button = React.DOM.button;
@@ -143,8 +145,12 @@
 
         if (isNominated) {
           buttonText = Span({ className: 'button-group' },
-            Span({ className: 'button-text button-text-default' }, r._('Nominated!')),
-            Span({ className: 'button-text button-text-hover' }, r._('Remove nomination?'))
+            Span({ className: 'button-text button-text-default' },
+              r._('Nominated!')
+            ),
+            Span({ className: 'button-text button-text-hover' },
+              r._('Remove nomination?')
+            )
           );
         } else {
           buttonText = r._('Nominate this Charity');
@@ -292,12 +298,13 @@
           donateDispatcher.dispatch({
             actionType: 'set-view-type',
             viewing: 'nominations',
-          })
+          });
         }
       },
 
       render: function() {
-        var nominationCount = nominated.state.list.length + nominated.state.unloadedCount;
+        var unloadedCount  = nominated.state.unloadedCount;
+        var nominationCount = nominated.state.list.length + unloadedCount;
         var message = null;
 
         if (LOGGED_IN && ACCOUNT_IS_ELIGIBLE) {
@@ -405,8 +412,8 @@
             searchQueryType: type,
           });
         } else {
-          // when clearing the search input, only keep around the previous results
-          // if there _were_ results
+          // when clearing the search input, only keep around the previous
+          // results if there _were_ results
           if (this.state.searchQuery && searchResults.state.list.length === 0) {
             donateDispatcher.dispatch({
               actionType: 'update-search-results',
@@ -425,11 +432,13 @@
 
       _getSearchResults: _.debounce(function(query, type) {
         var lowerQuery = query.toLowerCase();
-
+        var apiEndpoint;
         if (type === 'ein') {
-          $.get('/donate/organizations/' + lowerQuery + '.json', this.handleEINLookup);
+          apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
+          $.get(apiEndpoint, this.handleEINLookup);
         } else {
-          $.get('/donate/organizations.json', { prefix: lowerQuery }, this.handleSearchResults);
+          apiEndpoint = '/donate/organizations.json';
+          $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
         }
       }, SEARCH_DEBOUNCE_TIME),
 
@@ -464,8 +473,9 @@
         var suggestion = null;
 
         if (typeAhead && query) {
-          var indexOfQuery = typeAhead.toLowerCase().indexOf(query.toLowerCase());
-          var typeAheadContainsQuery = (typeAhead && query && indexOfQuery >= 0);
+          var lowerQuery = query.toLowerCase();
+          var indexOfQuery = typeAhead.toLowerCase().indexOf(lowerQuery);
+          var typeAheadContainsQuery = typeAhead && query && indexOfQuery >= 0;
 
           if (typeAheadContainsQuery) {
             suggestion = query + typeAhead.slice(query.length + indexOfQuery);
@@ -658,4 +668,4 @@
       RedditDonateDisplay: RedditDonateDisplay,
     };
   };
-}(React, Flux, r, $, _);
+})(window.React, window.Flux, window.r, window.jQuery, window._);

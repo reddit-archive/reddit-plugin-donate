@@ -1,4 +1,6 @@
-!function(r) {
+;(function(r) {
+  'use strict';
+
   r.donate = {};
 
   // hacky hack around server returning jquery junk
@@ -23,7 +25,7 @@
           }
         break;
         case 1:
-          matches = JQUERY_RESPONSE_ERROR.exec(args[0])
+          matches = JQUERY_RESPONSE_ERROR.exec(args[0]);
           if (op === 'call' && matches && matches.length > 1) {
             errorKey = matches[1];
             step = 2;
@@ -63,4 +65,4 @@
       return params;
     }, {});
   };
-}(r);
+})(window.r);

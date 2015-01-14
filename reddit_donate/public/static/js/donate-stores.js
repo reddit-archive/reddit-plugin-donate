@@ -1,4 +1,6 @@
-!function(r, Flux, _) {
+;(function(r, Flux, _) {
+  'use strict';
+
   var searchResults = new Flux.Store({
     getDefaultState: function() {
       return {
@@ -30,6 +32,8 @@
     },
 
     receive: function(payload) {
+      var ein, charity, nominations, unloadedCount;
+
       switch (payload.actionType) {
         case 'update-nominated':
           this.setState({
@@ -38,11 +42,11 @@
           });
         break;
         case 'remove-nomination':
-          var ein = payload.ein;
+          ein = payload.ein;
 
-          var charity = charityData.state.byEIN[ein];
-          var nominations = this.state.list;
-          var unloadedCount = this.state.unloadedCount;
+          charity = charityData.state.byEIN[ein];
+          nominations = this.state.list;
+          unloadedCount = this.state.unloadedCount;
 
           if (charity && charity.Nominated) {
             charity.Nominated = false;
@@ -63,11 +67,11 @@
           }
         break;
         case 'nominate-charity':
-          var ein = payload.ein;
+          ein = payload.ein;
 
-          var charity = charityData.state.byEIN[ein];
-          var nominations = this.state.list;
-          var unloadedCount = this.state.unloadedCount;
+          charity = charityData.state.byEIN[ein];
+          nominations = this.state.list;
+          unloadedCount = this.state.unloadedCount;
 
           if (charity && !charity.Nominated) {
             charity.Nominated = true;
@@ -134,7 +138,11 @@
     receive: function(payload) {
       switch(payload.actionType) {
         case 'update-search-results':
-          var suggestion = payload.results.length ? payload.results[0].DisplayName : null;
+          var suggestion = null;
+          
+          if (payload.results.length) {
+            suggestion = payload.results[0].DisplayName;
+          }
 
           this.setState({
             suggestion: suggestion,
@@ -142,7 +150,7 @@
         break;
       }
     }
-  })
+  });
 
   var viewType = new Flux.Store({
     getDefaultState: function() {
@@ -176,4 +184,4 @@
     typeAheadSuggest: typeAheadSuggest,
     viewType: viewType,
   };
-}(r, Flux, _);
+})(window.r, window.Flux, window._);
