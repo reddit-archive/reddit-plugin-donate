@@ -244,7 +244,7 @@
 
     render: function() {
       var classes = React.addons.classSet({
-        'charity-card': true,
+        'charity-card md': true,
         'nominated': this.props.Nominated,
         'error': this.state.errors,
       });
@@ -493,7 +493,7 @@
           'manual': !autoComplete,
         });
         var subTextClasses = React.addons.classSet({
-          'search-input-subtext': true,
+          'search-input-subtext md': true,
           'viewing-nominated': !searching,
           'search-results-type': searching,
         });
@@ -614,7 +614,7 @@
 
         if (charityCards && charityCards.length) {
           var classes = React.addons.classSet({
-            'charity-card-list': true,
+            'charity-card-list md-container': true,
             'search-results': searching,
             'nominations': !searching,
           });
@@ -648,7 +648,7 @@
               className: 'no-search-results',
               key: 'no-results',
             },
-            Div({ className: 'message'}, message)
+            Div({ className: 'message md'}, message)
           );
         }
       },
