@@ -299,7 +299,7 @@
         } else {
           donateDispatcher.dispatch({
             actionType: 'set-view-type',
-            viewing: 'nominations',
+            viewingSearch: false,
           });
         }
       },
@@ -376,7 +376,7 @@
         var typeAhead = null;
 
         if (this.state.searchQuery && this.state.searchQueryType === 'name' &&
-            viewType.state.viewing === 'search') {
+            viewType.state.viewingSearch) {
           typeAhead = typeAheadSuggest.state.suggestion;
         }
 
@@ -394,7 +394,7 @@
       viewSearch: function() {
         donateDispatcher.dispatch({
           actionType: 'set-view-type',
-          viewing: 'search',
+          viewingSearch: true,
         });
       },
 
@@ -484,7 +484,7 @@
           }
         }
 
-        var searching = viewType.state.viewing === 'search';
+        var viewingSearch = viewType.state.viewingSearch;
         var autoComplete = queryType === 'name';
         var returnToSearchLink = null;
         var searchButtonClasses = React.addons.classSet({
@@ -494,14 +494,14 @@
         });
         var subTextClasses = React.addons.classSet({
           'search-input-subtext md': true,
-          'viewing-nominated': !searching,
-          'search-results-type': searching,
+          'viewing-nominated': !viewingSearch,
+          'search-results-type': viewingSearch,
         });
         var subTextKey = 'results-by-' + queryType;
         var subText;
 
 
-        if (!searching) {
+        if (!viewingSearch) {
           subText = r._('viewing your %(nominations)s nominations').format({
             nominations: nominated.state.list.length,
           });
@@ -516,7 +516,7 @@
           });
         }
 
-        if (!searching) {
+        if (!viewingSearch) {
           returnToSearchLink = A({ onClick: this.viewSearch },
             r._('back to search')
           );
@@ -526,7 +526,7 @@
           Div({
               className: 'reddit-donate-search',
               style: {
-                display: searching ? 'flex' : 'none',
+                display: viewingSearch ? 'flex' : 'none',
               },
             },
             Div({ className: 'search-input-group' },
@@ -607,16 +607,15 @@
       },
 
       renderCharityCardList: function() {
-        var viewing = viewType.state.viewing;
-        var searching = (viewing === 'search');
-        var source = searching ? searchResults : nominated;
+        var viewingSearch = viewType.state.viewingSearch;
+        var source = viewingSearch ? searchResults : nominated;
         var charityCards = source.state.list;
 
         if (charityCards && charityCards.length) {
           var classes = React.addons.classSet({
             'charity-card-list md-container': true,
-            'search-results': searching,
-            'nominations': !searching,
+            'search-results': viewingSearch,
+            'nominations': !viewingSearch,
           });
           return CSSTransitionGroup({
               component: Div,
@@ -631,7 +630,7 @@
           var query = searchResults.state.query;
           var message;
 
-          if (!searching) {
+          if (!viewingSearch) {
             message = r._('you haven\'t nominated any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
             message = r._('search by charity name or EIN!');

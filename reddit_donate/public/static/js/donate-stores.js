@@ -155,8 +155,7 @@
   var viewType = new Flux.Store({
     getDefaultState: function() {
       return {
-        // one of ['search', 'nominated']
-        viewing: 'search',
+        viewingSearch: true,
       };
     },
 
@@ -164,12 +163,12 @@
       switch (payload.actionType) {
         case 'set-view-type':
           this.setState({
-            viewing: payload.viewing,
+            viewingSearch: payload.viewingSearch,
           });
         break;
         case 'update-nominated':
           this.setState({
-            viewing: 'nominations',
+            viewingSearch: false,
           });
         break;
       }
