@@ -1,3 +1,5 @@
+/* jshint newcap:false */
+
 ;(function(React, Flux, r, $, _) {
   'use strict';
 
