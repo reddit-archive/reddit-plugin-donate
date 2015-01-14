@@ -136,7 +136,7 @@
     },
 
     receive: function(payload) {
-      switch(payload.actionType) {
+      switch (payload.actionType) {
         case 'update-search-results':
           var suggestion = null;
           
