@@ -1,4 +1,5 @@
 !function(Flux, Backbone, _) {
+  'use strict';
 
   if (typeof Flux.Store !== 'undefined') {
     throw 'Existing Flux.Store implementation found!';
@@ -9,7 +10,13 @@
    * uses Backbone.Model for event handling and state
    */
   function FluxStore(descriptor) {
-    var initialState = descriptor.getDefaultState ? descriptor.getDefaultState() : {};
+    var initialState;
+
+    if (descriptor.getDefaultState) {
+      initialState = descriptor.getDefaultState();
+    } else {
+      initialState = {};
+    }
 
     this.model = new Backbone.Model();
     this.state = this.model.attributes;
@@ -27,7 +34,6 @@
 
       // force update any time we set a state attribute with an object, since
       // that's easier that doing a deep equality check
-      var forceUpdate = false;
       for (var key in newState) {
         if (typeof newState[key] === 'object') {
           if (typeof this.model.changed[key] === 'undefined') {
@@ -60,8 +66,6 @@
     var fluxStores = _.toArray(arguments);
 
     if (!fluxStores.length) { return {}; }
-
-    var listeners = {};
 
     var update = _.debounce(function update() {
       this.forceUpdate();
