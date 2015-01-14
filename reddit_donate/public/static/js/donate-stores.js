@@ -26,7 +26,7 @@
   var nominated = new Flux.Store({
     getDefaultState: function() {
       return {
-        unloadedCount: r.config.unloadedNominations | 0,
+        unloadedCount: parseInt(r.config.unloadedNominations, 10) || 0,
         list: [],
       };
     },
