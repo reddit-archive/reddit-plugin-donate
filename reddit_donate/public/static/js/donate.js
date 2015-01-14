@@ -1,4 +1,4 @@
-;(function(React, Flux, r, $) {
+!function(React, Flux, r, $) {
   'use strict';
 
   // instantiate global dispatcher
@@ -34,4 +34,4 @@
       document.getElementById('reddit-donate-counter')
     );
   });
-})(window.React, window.Flux, window.r, window.jQuery);
+}(React, Flux, r, jQuery);

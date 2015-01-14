@@ -1,4 +1,4 @@
-;(function(r) {
+!function(r) {
   'use strict';
 
   r.donate = {};
@@ -65,4 +65,4 @@
       return params;
     }, {});
   };
-})(window.r);
+}(r);

@@ -1,6 +1,6 @@
 /* jshint newcap:false */
 
-;(function(React, Flux, r, $, _) {
+!function(React, Flux, r, $, _) {
   'use strict';
 
   // import react elements for brevity in the render methods
@@ -670,4 +670,4 @@
       RedditDonateDisplay: RedditDonateDisplay,
     };
   };
-})(window.React, window.Flux, window.r, window.jQuery, window._);
+}(React, Flux, r, jQuery, _);

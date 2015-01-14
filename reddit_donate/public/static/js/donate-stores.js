@@ -1,4 +1,4 @@
-;(function(r, Flux, _) {
+!function(r, Flux, _) {
   'use strict';
 
   var searchResults = new Flux.Store({
@@ -184,4 +184,4 @@
     typeAheadSuggest: typeAheadSuggest,
     viewType: viewType,
   };
-})(window.r, window.Flux, window._);
+}(r, Flux, _);
