@@ -419,7 +419,7 @@
         force = force || false;
 
         if (query && query.length >= MIN_QUERY_LENGTH) {
-          var type = EIN_QUERY_CHECK.test(query) ? 'ein' : 'name';
+          var type = EIN_QUERY_CHECK.test(query.replace(/-/g, '')) ? 'ein' : 'name';
 
           if (type === 'name' || force) {
             this._getSearchResults(query, type);
@@ -452,6 +452,7 @@
         var lowerQuery = query.toLowerCase();
         var apiEndpoint;
         if (type === 'ein') {
+          lowerQuery = lowerQuery.replace(/-/g, '');
           apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
           $.get(apiEndpoint, this.handleEINLookup);
         } else {
