@@ -45,9 +45,6 @@
 
 
 // some resets
-body {
-  background: @off-white;
-}
 
 a {
   cursor: pointer;
@@ -71,6 +68,7 @@ a {
 }
 
 
+.reddit-donate-footer .footer-content,
 .reddit-donate-header .header-content,
 .reddit-donate-search {
   max-width: 1024px;
@@ -78,6 +76,7 @@ a {
 }
 
 @media (max-width: 1024px) {
+  .reddit-donate-footer,
   .reddit-donate-header,
   .reddit-donate-search {
     max-width: 100%;
@@ -192,10 +191,16 @@ a {
   background-color: @off-white;
   background-position: center top;
   background-repeat: repeat;
-  min-height: 300px;
   overflow: auto;
   padding-bottom: (@margin-large * 1px);
   padding-top: (@margin-xxx-large * 1px);
+}
+
+.reddit-donate-footer {
+  border-top: 4px solid @eggshell;
+  .footer-content {
+    margin: (@margin-large * 1px) auto (@margin-small * 1px);
+  }
 }
 
 .reddit-donate-search {
