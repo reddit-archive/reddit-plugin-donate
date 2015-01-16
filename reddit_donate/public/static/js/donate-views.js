@@ -308,6 +308,7 @@
         var unloadedCount  = nominated.state.unloadedCount;
         var nominationCount = nominated.state.list.length + unloadedCount;
         var message = null;
+        var viewNominationsLink = null;
 
         if (LOGGED_IN && ACCOUNT_IS_ELIGIBLE) {
           if (nominationCount === 1) {
@@ -319,6 +320,9 @@
           }
 
           message = Strong(null, message);
+          viewNominationsLink = A({ onClick: this.viewNominations },
+            r._('view nominations')
+          );
         } else if (!LOGGED_IN) {
           message = r._('you must be logged in to nominate charities!');
         } else {
@@ -327,8 +331,7 @@
 
         return Div({ className: 'reddit-donate-nominations' },
           message,
-          nominationCount ?
-            A({ onClick: this.viewNominations }, r._('view nominations')) : null
+          viewNominationsLink
         );
       },
     });
@@ -469,6 +472,10 @@
       },
 
       render: function() {
+        if (LOGGED_IN && !ACCOUNT_IS_ELIGIBLE) {
+          return null;
+        }
+
         var queryType = this.state.searchQueryType;
         var typeAhead = this.getTypeAhead();
         var query = this.state.searchQuery;
@@ -601,6 +608,10 @@
       },
 
       render: function() {
+        if (LOGGED_IN && !ACCOUNT_IS_ELIGIBLE) {
+          return null;
+        }
+
         return Div({ className: 'reddit-donate-display' },
           this.renderCharityCardList()
         );
