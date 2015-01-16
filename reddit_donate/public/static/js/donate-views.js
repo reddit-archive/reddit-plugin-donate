@@ -24,7 +24,7 @@
   var LOGGED_IN = r.config.logged;
   var ACCOUNT_IS_ELIGIBLE = r.config.accountIsEligible;
   var SEARCH_DEBOUNCE_TIME = 500;
-
+  var DOMAIN = r.config.currentOrigin;
 
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
@@ -136,7 +136,7 @@
       if (!LOGGED_IN) {
         button = A({
             className: classes,
-            href: '/donate?ein=' + encodeURIComponent(this.props.EIN),
+            href: DOMAIN + '/donate?ein=' + encodeURIComponent(this.props.EIN),
           },
           r._('Log In to Nominate')
         );
