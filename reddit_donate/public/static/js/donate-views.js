@@ -25,6 +25,7 @@
   var ACCOUNT_IS_ELIGIBLE = r.config.accountIsEligible;
   var SEARCH_DEBOUNCE_TIME = 500;
   var DOMAIN = r.config.currentOrigin;
+  var CHARITY_NAVIGATOR_BASE_DOMAIN = 'http://www.charitynavigator.org/index.cfm?bay=search.summary&orgid=';
 
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
@@ -96,6 +97,7 @@
         EIN: null,
         Nominated: false,
         OverallRtg: '',
+        OrgID: '',
         State: '',
         Tag_Line: '',
         URL: '',
@@ -214,8 +216,19 @@
 
       if (this.props.URL) {
         metaComponents.push(CharityCardMetaData(null,
+          'Web: ',
           A({
             href: this.props.URL,
+            target: 'blank',
+          }, this.props.URL)
+        ));
+      }
+
+      if (this.props.OrgID) {
+        var realOrgID = this.props.OrgID.split('.')[0];
+        metaComponents.push(CharityCardMetaData(null,
+          A({
+            href: CHARITY_NAVIGATOR_BASE_DOMAIN + encodeURIComponent(realOrgID),
             target: 'blank',
           }, 'More info on Charity Navigator')
         ));
