@@ -7,7 +7,15 @@ from reddit_donate import models
 
 
 MIN_PREFIX_LEN = 3
-STOP_WORDS = ["the "]
+
+# words that would frequently get dropped in conversation about a charity but
+# show up in lots of them (e.g. "American Red Cross")
+STOP_WORDS = [
+    "american ",
+    "international ",
+    "national ",
+    "the ",
+]
 
 
 def _generate_prefixes(display_name):
