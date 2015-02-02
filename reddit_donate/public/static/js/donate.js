@@ -18,9 +18,7 @@
   var params = r.donate.getQueryParams();
   $(function() {
     React.renderComponent(
-      views.RedditDonateSearch({
-        searchQuery: params.ein || '',
-      }),
+      views.RedditDonateSearch(),
       document.getElementById('reddit-donate-search')
     );
 

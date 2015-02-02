@@ -47,12 +47,18 @@ def inject_nomination_status(organizations, assume_nominated=False):
 class DonateController(RedditController):
     @validate(
         eligible=VAccountEligible(),
+        organization=VOrganization("organization"),
     )
-    def GET_landing(self, eligible):
+    def GET_landing(self, eligible, organization):
         if c.user_is_loggedin:
             nomination_count = DonationNominationsByAccount.count(c.user)
         else:
             nomination_count = None
+
+        if organization:
+            wrapped_organization = inject_nomination_status([organization])
+        else:
+            wrapped_organization = None
 
         content = pages.DonateLanding(
             eligible=eligible,
@@ -64,6 +70,7 @@ class DonateController(RedditController):
             extra_js_config={
                 "unloadedNominations": nomination_count,
                 "accountIsEligible": eligible,
+                "organization": wrapped_organization,
             },
         ).render()
 

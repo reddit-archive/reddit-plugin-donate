@@ -1,12 +1,16 @@
 !function(r, Flux, _) {
   'use strict';
 
+  var initialCharityData = r.config.organization;
+
   var searchResults = new Flux.Store({
     getDefaultState: function() {
+      var results = initialCharityData || [];
+
       return {
         query: '',
         queryType: 'name',
-        list: [],
+        list: results,
       };
     },
 
@@ -96,9 +100,17 @@
   });
 
   var charityData = new Flux.Store({
-    getInitialState: function() {
+    getDefaultState: function() {
+      var data;
+
+      if (initialCharityData && initialCharityData.length) {
+        data = this.getCharityDataByEin(initialCharityData);
+      } else {
+        data = {};
+      }
+
       return {
-        byEIN: {},
+        byEIN: data,
       };
     },
 
@@ -107,7 +119,7 @@
       var cache = {};
 
       sources.forEach(function(source) {
-        source.state.list.reduce(function(cache, data) {
+        source.reduce(function(cache, data) {
           cache[data.EIN] = data;
           return cache;
         }, cache);
@@ -121,7 +133,10 @@
         case 'update-nominated':
         case 'update-search-results':
           this.setState({
-            byEIN: this.getCharityDataByEin(searchResults, nominated),
+            byEIN: this.getCharityDataByEin(
+              searchResults.state.list,
+              nominated.state.list
+            ),
           });
         break;
       }

@@ -138,7 +138,7 @@
       if (!LOGGED_IN) {
         button = A({
             className: classes,
-            href: DOMAIN + '/donate?ein=' + encodeURIComponent(this.props.EIN),
+            href: DOMAIN + '/donate?organization=' + encodeURIComponent(this.props.EIN),
           },
           r._('Log in to vote')
         );
@@ -361,12 +361,6 @@
           searchQuery: this.props.searchQuery || '',
           searchQueryType: 'name',
         };
-      },
-
-      componentWillMount: function() {
-        if (this.props.searchQuery) {
-          this.search(this.props.searchQuery, true);
-        }
       },
 
       handleKeyDown: function(e) {
