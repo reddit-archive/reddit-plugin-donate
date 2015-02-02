@@ -140,7 +140,7 @@
             className: classes,
             href: DOMAIN + '/donate?ein=' + encodeURIComponent(this.props.EIN),
           },
-          r._('Log In to Nominate')
+          r._('Log in to vote')
         );
       } else if (!ACCOUNT_IS_ELIGIBLE) {
         button = null;
@@ -150,14 +150,14 @@
         if (isNominated) {
           buttonText = Span({ className: 'button-group' },
             Span({ className: 'button-text button-text-default' },
-              r._('Nominated!')
+              r._('Voted!')
             ),
             Span({ className: 'button-text button-text-hover' },
-              r._('Remove nomination?')
+              r._('Remove vote?')
             )
           );
         } else {
-          buttonText = r._('Nominate this Charity');
+          buttonText = r._('Vote for this charity');
         }
 
         var buttonIcon = null;
@@ -325,19 +325,19 @@
 
         if (LOGGED_IN && ACCOUNT_IS_ELIGIBLE) {
           if (nominationCount === 1) {
-            message =  r._('you\'ve nominated 1 charity');
+            message =  r._('you\'ve voted for 1 charity');
           } else {
-            message = r._('you\'ve nominated %(nominations)s charities').format({
+            message = r._('you\'ve voted for %(nominations)s charities').format({
               nominations: nominationCount,
             });
           }
 
           message = Strong(null, message);
           viewNominationsLink = A({ onClick: this.viewNominations },
-            r._('view nominations')
+            r._('view your votes')
           );
         } else if (!LOGGED_IN) {
-          message = r._('you must be logged in to nominate charities!');
+          message = r._('you must be logged in to vote for charities!');
         } else {
           message = r._('your account is not old enough to participate');
         }
@@ -523,7 +523,7 @@
 
 
         if (!viewingSearch) {
-          subText = r._('viewing your %(nominations)s nominations').format({
+          subText = r._('viewing your %(nominations)s votes').format({
             nominations: nominated.state.list.length,
           });
         } else if (queryType === 'name' && searchResults.state.list.length) {
@@ -656,7 +656,7 @@
           var message;
 
           if (!viewingSearch) {
-            message = r._('you haven\'t nominated any charities yet!');
+            message = r._('you haven\'t voted for any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
             message = r._('search by charity name or EIN!');
           } else if (searchResults.state.queryType === 'ein') {

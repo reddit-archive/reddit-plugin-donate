@@ -7,7 +7,7 @@
 <header class="reddit-donate-header md-container">
   <div class="header-content md">
     <h2>reddit donate</h2>
-    <div class="subtitle">phase 1: charity nomination</div>
+    <div class="subtitle">Giving 10% back</div>
 
     <%
     blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
@@ -16,7 +16,7 @@
     %if not c.user_is_loggedin:
       <p>
         You must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before February 28, 2014</strong>
-        &#32;to participate in the nomination process!
+        &#32;to participate in the voting process!
       </p>
       <p>
         Check out the&#32;<a href="${blog_post_url}">announcement blog post</a>&#32;
@@ -24,18 +24,18 @@
       </p>
     %elif thing.eligible:
       <p>
-        use the field below to find charities to nominate for
+        use the field below to find charities to vote on for
         &#32;<a href="${blog_post_url}">reddit’s decimation giveaway.</a>
       </p>
       <p>
-        you may nominate as many charities as you want!
+        you may vote for as many charities as you want!
         &#32;<a href="/r/redditdonate">join the discussion on reddit.</a>
       </p>
     %else:
       <p>
         Sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before</em>&#32;the
         &#32;<a href="${blog_post_url}">announcement blog post</a>&#32;are
-        eligible to nominate charities.
+        eligible to vote for charities.
       </p>
       <p>
         You can still participate by &#32;<a href="/r/redditdonate">joining
