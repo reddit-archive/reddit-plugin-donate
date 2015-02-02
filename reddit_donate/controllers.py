@@ -55,7 +55,7 @@ class DonateController(RedditController):
         else:
             nomination_count = None
 
-        if (organization):
+        if organization:
             wrapped_organization = inject_nomination_status([organization])
         else:
             wrapped_organization = None
