@@ -15,7 +15,7 @@ class VOrganization(VInt):
         try:
             ein = int(ein_text)
             return DonationOrganization.byEIN(ein)
-        except (ValueError, tdb_cassandra.NotFound):
+        except (TypeError, ValueError, tdb_cassandra.NotFound):
             self.set_error(errors.DONATE_UNKNOWN_ORGANIZATION)
             return None
 
