@@ -62,13 +62,6 @@ class Donate(Plugin):
         )
 
         mc(
-            "/donate/discuss/:organization",
-            controller="donate",
-            action="discuss",
-            conditions={"function": not_in_sr},
-        )
-
-        mc(
             "/api/donate/:action",
             controller="donate",
             conditions={"function": not_in_sr},

@@ -175,10 +175,15 @@
         );
       }
 
+      var discussionLink = '/r/reddit_test0/submit?' + $.param({
+        url: DOMAIN + '/donate?' + $.param({ organization: this.props.EIN }),
+        title: this.props.DisplayName,
+      });
+
       return Div({ className: 'buttons' },
         button,
         A({
-            href: DOMAIN + '/donate/discuss/' + encodeURIComponent(this.props.EIN),
+            href: discussionLink,
             className: 'discuss-link',
           },
           r._('discuss on reddit')

@@ -1,12 +1,9 @@
-from pylons import c, g
+from pylons import c
 from pylons.i18n import _
-import urllib
 
 from r2.controllers import add_controller
 from r2.controllers.reddit_base import RedditController
-from r2.lib.db.thing import NotFound
 from r2.lib.errors import errors
-from r2.models import Link, Subreddit
 from r2.lib.validator import (
     json_validate,
     validate,
@@ -152,31 +149,3 @@ class DonateController(RedditController):
         orgs = DonationOrganization.byEIN(nominated_org_ids)
         wrapped = inject_nomination_status(orgs, assume_nominated=True)
         return wrapped
-
-    @validate(
-        organization=VOrganization("organization"),
-    )
-    def GET_discuss(self, organization):
-        """Redirects to either the prefilled submit page or the existing post."""
-        sr_name = 'redditdonate'
-
-        if organization:
-            ein = organization.data['EIN']
-            name = organization.data['DisplayName']
-            discuss_url = 'https://%(domain)s/donate?organization=%(ein)s' % {
-                                'domain': g.domain,
-                                'ein': ein,
-                            }
-
-            try:
-                sr = Subreddit._by_name(sr_name)
-                link = Link._by_url(discuss_url, sr)[0]
-                return self.redirect(link.make_permalink_slow())
-            except NotFound:
-                return self.redirect('/r/%(sr)s/submit?url=%(url)s&title=%(title)s' % {
-                                        'sr': sr_name,
-                                        'url': discuss_url,
-                                        'title': urllib.quote(name)
-                                    })
-
-        return self.redirect('/r/%s/' % sr_name)
