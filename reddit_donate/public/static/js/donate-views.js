@@ -175,7 +175,20 @@
         );
       }
 
-      return Div({ className: 'buttons' }, button);
+      var discussionLink = '/r/redditdonate/submit?' + $.param({
+        url: DOMAIN + '/donate?' + $.param({ organization: this.props.EIN }),
+        title: this.props.DisplayName,
+      });
+
+      return Div({ className: 'buttons' },
+        button,
+        A({
+            href: discussionLink,
+            className: 'discuss-link',
+          },
+          r._('discuss on reddit')
+        )
+      );
     },
 
     renderMetaData: function() {
