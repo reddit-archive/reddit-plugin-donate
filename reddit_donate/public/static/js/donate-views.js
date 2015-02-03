@@ -175,7 +175,15 @@
         );
       }
 
-      return Div({ className: 'buttons' }, button);
+      return Div({ className: 'buttons' },
+        button,
+        A({
+            href: DOMAIN + '/donate/discuss/' + encodeURIComponent(this.props.EIN),
+            className: 'discuss-link',
+          },
+          r._('discuss on reddit')
+        )
+      );
     },
 
     renderMetaData: function() {
