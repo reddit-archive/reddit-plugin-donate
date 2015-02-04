@@ -175,7 +175,7 @@
         );
       }
 
-      var discussionLink = '/r/reddit_test0/submit?' + $.param({
+      var discussionLink = '/r/redditdonate/submit?' + $.param({
         url: DOMAIN + '/donate?' + $.param({ organization: this.props.EIN }),
         title: this.props.DisplayName,
       });
