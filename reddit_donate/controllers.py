@@ -1,6 +1,7 @@
 from pylons import c
 from pylons.i18n import _
 
+from r2.config import feature
 from r2.controllers import add_controller
 from r2.controllers.reddit_base import RedditController
 from r2.lib.errors import errors
@@ -50,6 +51,9 @@ class DonateController(RedditController):
         organization=VOrganization("organization"),
     )
     def GET_landing(self, eligible, organization):
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
+
         if c.user_is_loggedin:
             nomination_count = DonationNominationsByAccount.count(c.user)
         else:
@@ -82,6 +86,9 @@ class DonateController(RedditController):
         organization=VOrganization("organization"),
     )
     def POST_nominate(self, form, jquery, organization):
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
+
         if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 
@@ -108,6 +115,9 @@ class DonateController(RedditController):
         organization=VOrganization("organization"),
     )
     def POST_unnominate(self, form, jquery, organization):
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
+
         if form.has_errors("organization", errors.DONATE_UNKNOWN_ORGANIZATION):
             return
 
@@ -122,6 +132,9 @@ class DonateController(RedditController):
     def GET_organization(self, responder, organization):
         """Look up a single org by EIN."""
 
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
+
         if responder.has_errors("organization",
                                 errors.DONATE_UNKNOWN_ORGANIZATION):
             return
@@ -135,6 +148,9 @@ class DonateController(RedditController):
     def GET_search(self, responder, prefix):
         """Get organizations by display-name prefix."""
 
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
+
         if responder.has_errors("prefix", errors.TOO_LONG, errors.TOO_SHORT):
             return
 
@@ -145,6 +161,8 @@ class DonateController(RedditController):
         VUser(),
     )
     def GET_nominations(self, responder):
+        if not feature.is_enabled('reddit_donate'):
+            return self.abort404()
         nominated_org_ids = DonationNominationsByAccount.get_for(c.user)
         orgs = DonationOrganization.byEIN(nominated_org_ids)
         wrapped = inject_nomination_status(orgs, assume_nominated=True)
