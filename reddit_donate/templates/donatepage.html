@@ -1,0 +1,10 @@
+<%inherit file="reddit.html"/>
+
+<%!
+    from r2.lib import js
+%>
+
+<%def name="javascript_bottom()">
+    ${parent.javascript_bottom()}
+    ${unsafe(js.use("donate"))}
+</%def>
