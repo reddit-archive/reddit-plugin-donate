@@ -24,7 +24,7 @@ from reddit_donate.models import (
 )
 
 
-NOMINATION_COOLDOWN = 15  # seconds
+NOMINATION_COOLDOWN = 1  # seconds
 
 
 def inject_nomination_status(organizations, assume_nominated=False):
