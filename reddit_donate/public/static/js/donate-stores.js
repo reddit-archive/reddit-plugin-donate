@@ -8,9 +8,10 @@
       var results = initialCharityData || [];
 
       return {
+        isSearching: false,
+        list: results,
         query: '',
         queryType: 'name',
-        list: results,
       };
     },
 
@@ -21,6 +22,12 @@
             query: payload.query,
             queryType: payload.queryType,
             list: payload.results,
+            isSearching: false,
+          });
+        break;
+        case 'new-search-request':
+          this.setState({
+            isSearching: true,
           });
         break;
       }

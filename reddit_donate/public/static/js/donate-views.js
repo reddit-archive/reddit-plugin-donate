@@ -479,6 +479,12 @@
           apiEndpoint = '/donate/organizations.json';
           $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
         }
+
+        donateDispatcher.dispatch({
+          actionType: 'new-search-request',
+          endpoint: apiEndpoint,
+          query: lowerQuery,
+        });
       }, SEARCH_DEBOUNCE_TIME),
 
       handleEINLookup: function(response) {
@@ -558,6 +564,14 @@
           );
         }
 
+        var buttonText;
+
+        if (searchResults.state.isSearching) {
+          buttonText = Span({ className: 'throbber' });
+        } else {
+          buttonText = r._('search');
+        }
+
         return Div(null,
           Div({
               className: 'reddit-donate-search',
@@ -587,7 +601,7 @@
             Button({
                 className: searchButtonClasses,
                 onClick: this.submitSearch,
-              }, 'search')
+              }, buttonText)
           ),
           Div({ className: 'md-container' },
             Div({ 
