@@ -26,6 +26,7 @@
   var SEARCH_DEBOUNCE_TIME = 500;
   var DOMAIN = r.config.currentOrigin;
   var CHARITY_NAVIGATOR_BASE_DOMAIN = 'http://www.charitynavigator.org/index.cfm?bay=search.summary&orgid=';
+  var EIN_WIKI_LINK = '/r/redditdonate/wiki/ein';
 
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
@@ -570,7 +571,7 @@
                 className: 'search-input',
                 onInput: this.updateSearchQuery,
                 onKeyDown: this.handleKeyDown,
-                placeholder: r._('search by charity name or ein'),
+                placeholder: r._('search by charity name or EIN/Tax ID'),
                 ref: 'search',
                 type: 'search',
                 defaultValue: this.state.searchQuery,
@@ -662,16 +663,28 @@
           var query = searchResults.state.query;
           var message;
 
+          var injectEINLink = function(text) {
+            var einText = r._('EIN/Tax ID');
+            var parts = text.split(einText);
+            var result = [parts[0]];
+            var link = A({ href: EIN_WIKI_LINK }, einText);
+
+            for (var i = 1, l = parts.length; i < l; i++) {
+              result.push(link, parts[i]);
+            }
+            return result;
+          }
+
           if (!viewingSearch) {
             message = r._('you haven\'t voted for any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
-            message = r._('search by charity name or EIN!');
+            message = injectEINLink(r._('search by charity name or EIN/Tax ID!'));
           } else if (searchResults.state.queryType === 'ein') {
-            message = r._('we couldn\'t find the charity with that EIN.  sorry.');
+            message = injectEINLink(r._('we couldn\'t find the charity with that EIN/Tax ID.  sorry.'));
           } else {
             message = [
               P(null, r._('we couldn\'t find any charities by that name.')),
-              Small(null, r._('try searching by EIN instead!')),
+              Small(null, injectEINLink(r._('try searching by EIN/Tax ID instead!'))),
             ];
           }
 
