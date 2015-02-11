@@ -20,12 +20,13 @@
 
   // some config
   var MIN_QUERY_LENGTH = 3;
-  var EIN_QUERY_CHECK = /^[0-9]{3}/;
+  var EIN_QUERY_CHECK = /^[0-9\-]{3}/;
   var LOGGED_IN = r.config.logged;
   var ACCOUNT_IS_ELIGIBLE = r.config.accountIsEligible;
   var SEARCH_DEBOUNCE_TIME = 500;
   var DOMAIN = r.config.currentOrigin;
   var CHARITY_NAVIGATOR_BASE_DOMAIN = 'http://www.charitynavigator.org/index.cfm?bay=search.summary&orgid=';
+  var EIN_WIKI_LINK = '/r/redditdonate/wiki/index#wiki_what_is_an_ein.2Ftax_id_and_how_do_i_find_it_for_my_favorite_charity.3F';
 
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
@@ -140,7 +141,7 @@
             className: classes,
             href: DOMAIN + '/donate?organization=' + encodeURIComponent(this.props.EIN),
           },
-          r._('Log in to vote')
+          r._('log in to vote')
         );
       } else if (!ACCOUNT_IS_ELIGIBLE) {
         button = null;
@@ -150,14 +151,14 @@
         if (isNominated) {
           buttonText = Span({ className: 'button-group' },
             Span({ className: 'button-text button-text-default' },
-              r._('Voted!')
+              r._('voted!')
             ),
             Span({ className: 'button-text button-text-hover' },
-              r._('Remove vote?')
+              r._('remove vote?')
             )
           );
         } else {
-          buttonText = r._('Vote for this charity');
+          buttonText = r._('vote for this charity');
         }
 
         var buttonIcon = null;
@@ -184,7 +185,7 @@
         button,
         A({
             href: discussionLink,
-            className: 'discuss-link',
+            className: 'discuss-link may-blank',
           },
           r._('discuss on reddit')
         )
@@ -211,25 +212,25 @@
 
       if (locationParts.length) {
         metaComponents.push(CharityCardMetaData(null,
-          'Location: ' + locationParts.join(', ')
+          'location: ' + locationParts.join(', ')
         ));
       }
 
       if (this.props.Category) {
         metaComponents.push(CharityCardMetaData(null,
-          'Category: ' + this.props.Category
+          'category: ' + this.props.Category
         ));
       }
 
       if (this.props.Cause) {
         metaComponents.push(CharityCardMetaData(null,
-          'Cause: ' + this.props.Cause
+          'cause: ' + this.props.Cause
         ));
       }
 
       if (this.props.URL) {
         metaComponents.push(CharityCardMetaData(null,
-          'Web: ',
+          'web: ',
           A({
             href: this.props.URL,
             target: 'blank',
@@ -243,7 +244,7 @@
           A({
             href: CHARITY_NAVIGATOR_BASE_DOMAIN + encodeURIComponent(realOrgID),
             target: 'blank',
-          }, 'More info on Charity Navigator')
+          }, 'more info on Charity Navigator')
         ));
       }
 
@@ -275,12 +276,16 @@
         'error': this.state.errors,
       });
 
+      var tagLine = null;
+      if (this.props.Tag_Line) {
+        tagLine = P({ className: 'charity-tag-line' }, _.unescape(this.props.Tag_Line));
+      }
+
       return Div({ className: classes },
         H2({ className: 'charity-name' }, _.unescape(this.props.DisplayName)),
         this.props.unloaded ?
           r._('loading...') : null,
-        this.props.Tag_Line ?
-          P({ className: 'charity-tag-line' }, this.props.Tag_Line) : null,
+        tagLine,
         this.renderMetaData(),
         this.renderErrors(),
         this.renderButton(),
@@ -316,7 +321,7 @@
 
       viewNominations: function() {
         if (nominated.state.unloadedCount) {
-          $.get('donate/nominations.json', function(results) {
+          $.get('/donate/nominations.json', function(results) {
             donateDispatcher.dispatch({
               actionType: 'update-nominated',
               nominations: results,
@@ -425,46 +430,46 @@
         query = query.trim();
         force = force || false;
 
+        var type = EIN_QUERY_CHECK.test(query) ? 'ein' : 'name';
+
         if (query && query.length >= MIN_QUERY_LENGTH) {
-          var type = EIN_QUERY_CHECK.test(query.replace(/-/g, '')) ? 'ein' : 'name';
-
-          if (type === 'name' || force) {
-            this._getSearchResults(query, type);
-          }
-
           this.setState({
             searchQuery: query,
             searchQueryType: type,
           });
         } else {
-          // when clearing the search input, only keep around the previous
-          // results if there _were_ results
-          if (this.state.searchQuery && searchResults.state.list.length === 0) {
-            donateDispatcher.dispatch({
-              actionType: 'update-search-results',
-              results: [],
-              query: null,
-              queryType: 'name',
-            });
-          }
-
           this.setState({
             searchQuery: null,
             searchQueryType: 'name'
           });
         }
+
+        this._getSearchResults(query, force, type);
       },
 
-      _getSearchResults: _.debounce(function(query, type) {
-        var lowerQuery = query.toLowerCase();
-        var apiEndpoint;
-        if (type === 'ein') {
-          lowerQuery = lowerQuery.replace(/-/g, '');
-          apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
-          $.get(apiEndpoint, this.handleEINLookup);
+      _getSearchResults: _.debounce(function(query, force, type) {
+        if (query && query.length >= MIN_QUERY_LENGTH) {
+          if (type === 'name' || force) {
+            var lowerQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '');
+            var apiEndpoint;
+            if (type === 'ein') {
+              apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
+              $.get(apiEndpoint, this.handleEINLookup);
+            } else {
+              apiEndpoint = '/donate/organizations.json';
+              $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
+            }
+
+            donateDispatcher.dispatch({
+              actionType: 'new-search-request',
+              endpoint: apiEndpoint,
+              query: lowerQuery,
+            });
+          }
         } else {
-          apiEndpoint = '/donate/organizations.json';
-          $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
+          donateDispatcher.dispatch({
+            actionType: 'clear-search-results',
+          });
         }
       }, SEARCH_DEBOUNCE_TIME),
 
@@ -526,7 +531,7 @@
           'search-results-type': viewingSearch,
         });
         var subTextKey = 'results-by-' + queryType;
-        var subText;
+        var subText = null;
 
 
         if (!viewingSearch) {
@@ -537,17 +542,20 @@
           subText =  r._('viewing %(results)s search results').format({
             results: searchResults.state.list.length,
           });
-        } else {
-          subText =  r._('searching by %(queryType)s. autocomplete %(auto)s.').format({
-            queryType: queryType,
-            auto: autoComplete ? 'enabled' : 'disabled',
-          });
         }
 
         if (!viewingSearch) {
           returnToSearchLink = A({ onClick: this.viewSearch },
             r._('back to search')
           );
+        }
+
+        var buttonText;
+
+        if (searchResults.state.isSearching) {
+          buttonText = Span({ className: 'throbber' });
+        } else {
+          buttonText = r._('search');
         }
 
         return Div(null,
@@ -570,7 +578,7 @@
                 className: 'search-input',
                 onInput: this.updateSearchQuery,
                 onKeyDown: this.handleKeyDown,
-                placeholder: r._('search by charity name or ein'),
+                placeholder: r._('enter charity name or EIN/Tax ID'),
                 ref: 'search',
                 type: 'search',
                 defaultValue: this.state.searchQuery,
@@ -579,7 +587,7 @@
             Button({
                 className: searchButtonClasses,
                 onClick: this.submitSearch,
-              }, 'search')
+              }, buttonText)
           ),
           Div({ className: 'md-container' },
             Div({ 
@@ -628,6 +636,18 @@
         });
       },
 
+      injectEINLink: function(text) {
+        var einText = r._('EIN/Tax ID');
+        var parts = text.split(einText);
+        var result = [parts[0]];
+        var link = A({ href: EIN_WIKI_LINK }, einText);
+
+        for (var i = 1, l = parts.length; i < l; i++) {
+          result.push(link, parts[i]);
+        }
+        return result;
+      },
+
       render: function() {
         if (LOGGED_IN && !ACCOUNT_IS_ELIGIBLE) {
           return null;
@@ -665,13 +685,13 @@
           if (!viewingSearch) {
             message = r._('you haven\'t voted for any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
-            message = r._('search by charity name or EIN!');
+            message = this.injectEINLink(r._('enter charity name or EIN/Tax ID!'));
           } else if (searchResults.state.queryType === 'ein') {
-            message = r._('we couldn\'t find the charity with that EIN.  sorry.');
+            message = this.injectEINLink(r._('we couldn\'t find the charity with that EIN/Tax ID.  sorry.'));
           } else {
             message = [
               P(null, r._('we couldn\'t find any charities by that name.')),
-              Small(null, r._('try searching by EIN instead!')),
+              Small(null, this.injectEINLink(r._('make sure you are using the charity\'s full name, or enter their EIN/Tax ID instead!'))),
             ];
           }
 

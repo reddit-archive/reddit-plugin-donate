@@ -1,7 +1,4 @@
-import datetime
-
-import pytz
-from pylons import c
+from pylons import c, g
 
 from r2.lib.db import tdb_cassandra
 from r2.lib.errors import errors
@@ -22,8 +19,10 @@ class VOrganization(VInt):
 
 class VAccountEligible(Validator):
     def run(self):
-        blog_post_date = datetime.datetime(2014, 2, 28, tzinfo=pytz.utc)
-        if not c.user_is_loggedin or c.user._date >= blog_post_date:
+        eligible_date = g.plugins['donate'].eligible_date
+        if not eligible_date:
+            return True
+        if not c.user_is_loggedin or c.user._date >= eligible_date:
             self.set_error(errors.DONATE_ACCOUNT_NOT_ELIGIBLE, field='eligible')
             return False
         return True

@@ -256,6 +256,11 @@ a {
   .search-button {
     font-size: 1.3em;
 
+    .throbber {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
     &.manual {
       .button-style(darken(@green, 5%), @off-white);
     }
@@ -288,6 +293,7 @@ a {
 
   small {
     display: block;
+    font-size: (@font-medium * 1px);
   }
 }
 
@@ -378,7 +384,7 @@ a {
 
     .discuss-link {
       display: block;
-      text-align: center;
+      text-align: right;
       margin-top: (@margin-small * 1px);
     }
   }

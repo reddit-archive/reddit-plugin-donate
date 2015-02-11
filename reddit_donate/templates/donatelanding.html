@@ -5,19 +5,23 @@
 <header class="reddit-donate-header md-container">
   <div class="header-content md">
     <h2>reddit donate</h2>
-    <div class="subtitle">Giving 10% back</div>
+    <div class="subtitle">giving 10% back</div>
 
     <%
     blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
+    eligible_date_str = g.plugins['donate'].eligible_date_str
     %>
 
     %if not c.user_is_loggedin:
       <p>
-        You must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before February 28, 2014</strong>
+        you must&#32;<a class="login-required">log in</a>
+        %if eligible_date_str:
+          &#32;<em>and</em>&#32;your account must be created&#32;<strong>before ${eligible_date_str}</strong>
+        %endif
         &#32;to participate in the voting process!
       </p>
       <p>
-        Check out the&#32;<a href="${blog_post_url}">announcement blog post</a>&#32;
+        check out the&#32;<a href="${blog_post_url}">announcement blog post</a>&#32;
         and&#32;<a href="/r/redditdonate">join the discussion on reddit.</a>
       </p>
     %elif thing.eligible:
@@ -31,12 +35,10 @@
       </p>
     %else:
       <p>
-        Sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before</em>&#32;the
-        &#32;<a href="${blog_post_url}">announcement blog post</a>&#32;are
-        eligible to vote for charities.
+        sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before ${eligible_date_str}</em>&#32;are eligible to vote for charities.
       </p>
       <p>
-        You can still participate by &#32;<a href="/r/redditdonate">joining
+        you can still participate by &#32;<a href="/r/redditdonate">joining
         the discussion on reddit!</a>
       </p>
     %endif
@@ -60,11 +62,11 @@
 
 <footer class="reddit-donate-footer md-container">
   <div class="footer-content md">
-    <p>In partnership with
+    <p>in partnership with
       &#32;<a href="http://www.charitynavigator.org/" target="_blank">Charity Navigator</a>.
     </p>
-    <p>Can’t find your favorite charity?
-      &#32;<a href="/r/redditdonate/wiki/charity-navigator">Click here to find out why</a>
+    <p>can’t find your favorite charity?
+      &#32;<a href="/r/redditdonate/wiki/index#wiki_why_do_i_have_to_search_by_ein.2Ftax_id_for_some_non-profits.3F">find out why</a>
     </p>
   </div>
 </footer>
