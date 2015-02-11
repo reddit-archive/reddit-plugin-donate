@@ -158,7 +158,7 @@
             )
           );
         } else {
-          buttonText = r._('rote for this charity');
+          buttonText = r._('vote for this charity');
         }
 
         var buttonIcon = null;
