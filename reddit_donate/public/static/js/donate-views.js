@@ -450,16 +450,12 @@
             searchQueryType: type,
           });
         } else {
-          // when clearing the search input, only keep around the previous
-          // results if there _were_ results
-          if (this.state.searchQuery && searchResults.state.list.length === 0) {
-            donateDispatcher.dispatch({
-              actionType: 'update-search-results',
-              results: [],
-              query: null,
-              queryType: 'name',
-            });
-          }
+          donateDispatcher.dispatch({
+            actionType: 'update-search-results',
+            results: [],
+            query: null,
+            queryType: 'name',
+          });
 
           this.setState({
             searchQuery: null,
