@@ -438,49 +438,48 @@
         query = query.trim();
         force = force || false;
 
+        var type = EIN_QUERY_CHECK.test(query.replace(/-/g, '')) ? 'ein' : 'name';
+
         if (query && query.length >= MIN_QUERY_LENGTH) {
-          var type = EIN_QUERY_CHECK.test(query.replace(/-/g, '')) ? 'ein' : 'name';
-
-          if (type === 'name' || force) {
-            this._getSearchResults(query, type);
-          }
-
           this.setState({
             searchQuery: query,
             searchQueryType: type,
           });
         } else {
-          donateDispatcher.dispatch({
-            actionType: 'update-search-results',
-            results: [],
-            query: null,
-            queryType: 'name',
-          });
-
           this.setState({
             searchQuery: null,
             searchQueryType: 'name'
           });
         }
+
+        this._getSearchResults(query, force, type);
       },
 
-      _getSearchResults: _.debounce(function(query, type) {
-        var lowerQuery = query.toLowerCase();
-        var apiEndpoint;
-        if (type === 'ein') {
-          lowerQuery = lowerQuery.replace(/-/g, '');
-          apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
-          $.get(apiEndpoint, this.handleEINLookup);
-        } else {
-          apiEndpoint = '/donate/organizations.json';
-          $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
-        }
+      _getSearchResults: _.debounce(function(query, force, type) {
+        if (query && query.length >= MIN_QUERY_LENGTH) {
+          if (type === 'name' || force) {
+            var lowerQuery = query.toLowerCase();
+            var apiEndpoint;
+            if (type === 'ein') {
+              lowerQuery = lowerQuery.replace(/-/g, '');
+              apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
+              $.get(apiEndpoint, this.handleEINLookup);
+            } else {
+              apiEndpoint = '/donate/organizations.json';
+              $.get(apiEndpoint, { prefix: lowerQuery }, this.handleSearchResults);
+            }
 
-        donateDispatcher.dispatch({
-          actionType: 'new-search-request',
-          endpoint: apiEndpoint,
-          query: lowerQuery,
-        });
+            donateDispatcher.dispatch({
+              actionType: 'new-search-request',
+              endpoint: apiEndpoint,
+              query: lowerQuery,
+            });
+          }
+        } else {
+          donateDispatcher.dispatch({
+            actionType: 'clear-search-results',
+          });
+        }
       }, SEARCH_DEBOUNCE_TIME),
 
       handleEINLookup: function(response) {

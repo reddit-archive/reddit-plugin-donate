@@ -4,7 +4,7 @@
   // instantiate global dispatcher
   var donateDispatcher = new Flux.Dispatcher();
 
-  
+
   // register stores to dispatcher
   var stores = r.donate.stores;
   stores.nominated.register(donateDispatcher);

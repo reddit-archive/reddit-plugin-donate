@@ -30,6 +30,14 @@
             isSearching: true,
           });
         break;
+        case 'clear-search-results':
+          this.setState({
+            query: null,
+            queryType: 'name',
+            list: [],
+            isSearching: false,
+          });
+        break;
       }
     },
   });
@@ -168,6 +176,11 @@
 
           this.setState({
             suggestion: suggestion,
+          });
+        break;
+        case 'clear-search-results':
+          this.setState({
+            suggestion: null,
           });
         break;
       }
