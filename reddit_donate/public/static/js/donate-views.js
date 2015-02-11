@@ -185,7 +185,7 @@
         button,
         A({
             href: discussionLink,
-            className: 'discuss-link',
+            className: 'discuss-link may-blank',
           },
           r._('discuss on reddit')
         )
