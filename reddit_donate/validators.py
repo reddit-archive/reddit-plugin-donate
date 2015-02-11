@@ -22,7 +22,7 @@ class VOrganization(VInt):
 
 class VAccountEligible(Validator):
     def run(self):
-        blog_post_date = datetime.datetime(2014, 2, 28, tzinfo=pytz.utc)
+        blog_post_date = datetime.datetime(2015, 2, 16, tzinfo=pytz.utc)
         if not c.user_is_loggedin or c.user._date >= blog_post_date:
             self.set_error(errors.DONATE_ACCOUNT_NOT_ELIGIBLE, field='eligible')
             return False

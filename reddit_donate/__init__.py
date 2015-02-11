@@ -17,7 +17,7 @@ class Donate(Plugin):
         "DONATE_UNKNOWN_ORGANIZATION":
             N_("unknown organization"),
         "DONATE_ACCOUNT_NOT_ELIGIBLE":
-            N_("account must be created before 2/28/2014"),
+            N_("account must be created before 2/16/2015"),
     }
 
     js = {

@@ -9,11 +9,12 @@
 
     <%
     blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
+    launch_date = "February 16, 2015"
     %>
 
     %if not c.user_is_loggedin:
       <p>
-        you must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before February 28, 2014</strong>
+        you must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before ${launch_date}</strong>
         &#32;to participate in the voting process!
       </p>
       <p>
