@@ -527,7 +527,7 @@
           'search-results-type': viewingSearch,
         });
         var subTextKey = 'results-by-' + queryType;
-        var subText;
+        var subText = null;
 
 
         if (!viewingSearch) {
@@ -537,11 +537,6 @@
         } else if (queryType === 'name' && searchResults.state.list.length) {
           subText =  r._('viewing %(results)s search results').format({
             results: searchResults.state.list.length,
-          });
-        } else {
-          subText =  r._('searching by %(queryType)s. autocomplete %(auto)s.').format({
-            queryType: queryType,
-            auto: autoComplete ? 'enabled' : 'disabled',
           });
         }
 
