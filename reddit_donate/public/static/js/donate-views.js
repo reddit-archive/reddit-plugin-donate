@@ -141,7 +141,7 @@
             className: classes,
             href: DOMAIN + '/donate?organization=' + encodeURIComponent(this.props.EIN),
           },
-          r._('Log in to vote')
+          r._('log in to vote')
         );
       } else if (!ACCOUNT_IS_ELIGIBLE) {
         button = null;
@@ -151,14 +151,14 @@
         if (isNominated) {
           buttonText = Span({ className: 'button-group' },
             Span({ className: 'button-text button-text-default' },
-              r._('Voted!')
+              r._('voted!')
             ),
             Span({ className: 'button-text button-text-hover' },
-              r._('Remove vote?')
+              r._('remove vote?')
             )
           );
         } else {
-          buttonText = r._('Vote for this charity');
+          buttonText = r._('rote for this charity');
         }
 
         var buttonIcon = null;
@@ -212,25 +212,25 @@
 
       if (locationParts.length) {
         metaComponents.push(CharityCardMetaData(null,
-          'Location: ' + locationParts.join(', ')
+          'location: ' + locationParts.join(', ')
         ));
       }
 
       if (this.props.Category) {
         metaComponents.push(CharityCardMetaData(null,
-          'Category: ' + this.props.Category
+          'category: ' + this.props.Category
         ));
       }
 
       if (this.props.Cause) {
         metaComponents.push(CharityCardMetaData(null,
-          'Cause: ' + this.props.Cause
+          'cause: ' + this.props.Cause
         ));
       }
 
       if (this.props.URL) {
         metaComponents.push(CharityCardMetaData(null,
-          'Web: ',
+          'web: ',
           A({
             href: this.props.URL,
             target: 'blank',
@@ -244,7 +244,7 @@
           A({
             href: CHARITY_NAVIGATOR_BASE_DOMAIN + encodeURIComponent(realOrgID),
             target: 'blank',
-          }, 'More info on Charity Navigator')
+          }, 'more info on Charity Navigator')
         ));
       }
 
