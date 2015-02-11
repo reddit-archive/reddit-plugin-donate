@@ -566,7 +566,7 @@
                 className: 'search-input',
                 onInput: this.updateSearchQuery,
                 onKeyDown: this.handleKeyDown,
-                placeholder: r._('search by charity name or EIN/Tax ID'),
+                placeholder: r._('enter charity name or EIN/Tax ID'),
                 ref: 'search',
                 type: 'search',
                 defaultValue: this.state.searchQuery,
@@ -673,13 +673,13 @@
           if (!viewingSearch) {
             message = r._('you haven\'t voted for any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
-            message = injectEINLink(r._('search by charity name or EIN/Tax ID!'));
+            message = injectEINLink(r._('enter charity name or EIN/Tax ID!'));
           } else if (searchResults.state.queryType === 'ein') {
             message = injectEINLink(r._('we couldn\'t find the charity with that EIN/Tax ID.  sorry.'));
           } else {
             message = [
               P(null, r._('we couldn\'t find any charities by that name.')),
-              Small(null, injectEINLink(r._('try searching by EIN/Tax ID instead!'))),
+              Small(null, injectEINLink(r._('make sure you are using the charity\'s full name, or enter their EIN/Tax ID instead!'))),
             ];
           }
 
