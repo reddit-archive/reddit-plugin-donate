@@ -3,32 +3,20 @@ from __future__ import print_function, division
 import csv
 import json
 
-from reddit_donate import models
+from reddit_donate import models, utils
 
 
 MIN_PREFIX_LEN = 3
 
-# words that would frequently get dropped in conversation about a charity but
-# show up in lots of them (e.g. "American Red Cross")
-STOP_WORDS = [
-    "american ",
-    "international ",
-    "national ",
-    "the ",
-]
-
 
 def _generate_prefixes(display_name):
-    sanitized = display_name.lower().strip()
+    sanitized = utils.sanitize_query(display_name)
 
-    for prefix_len in xrange(MIN_PREFIX_LEN, len(sanitized)+1):
-        yield sanitized[:prefix_len]
-
-    for stop_word in STOP_WORDS:
-        if sanitized.startswith(stop_word):
-            unstopped = sanitized[len(stop_word):].strip()
-            for prefix_len in xrange(MIN_PREFIX_LEN, len(unstopped)+1):
-                yield unstopped[:prefix_len]
+    words = sanitized.split()
+    for i in xrange(len(words)):
+        spaceless = "".join(words[i:])
+        for prefix_len in xrange(MIN_PREFIX_LEN, len(spaceless)+1):
+            yield spaceless[:prefix_len]
 
 
 def _coerce_values(mapping, function, keys):

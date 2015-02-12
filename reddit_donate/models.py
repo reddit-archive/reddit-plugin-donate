@@ -6,6 +6,8 @@ from pycassa.cassandra.ttypes import NotFoundException
 from r2.lib import utils
 from r2.lib.db import tdb_cassandra
 
+from reddit_donate import utils as donate_utils
+
 
 MAX_COLUMNS = 150
 
@@ -107,7 +109,9 @@ class DonationOrganizationsByPrefix(tdb_cassandra.View):
 
     @classmethod
     def byPrefix(cls, prefix):
-        stripped = prefix.strip()
+        stripped = donate_utils.normalize_query(prefix)
+        if not stripped:
+            return []
         try:
             results = cls._cf.get(stripped, column_count=MAX_COLUMNS)
         except NotFoundException:
