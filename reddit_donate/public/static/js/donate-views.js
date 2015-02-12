@@ -26,7 +26,7 @@
   var SEARCH_DEBOUNCE_TIME = 500;
   var DOMAIN = r.config.currentOrigin;
   var CHARITY_NAVIGATOR_BASE_DOMAIN = 'http://www.charitynavigator.org/index.cfm?bay=search.summary&orgid=';
-  var EIN_WIKI_LINK = '/r/redditdonate/wiki/ein';
+  var EIN_WIKI_LINK = '/r/redditdonate/wiki/index#wiki_what_is_an_ein.2Ftax_id_and_how_do_i_find_it_for_my_favorite_charity.3F';
 
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
