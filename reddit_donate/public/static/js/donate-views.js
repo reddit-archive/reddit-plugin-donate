@@ -329,7 +329,7 @@
 
       viewNominations: function() {
         if (nominated.state.unloadedCount) {
-          $.get('donate/nominations.json', function(results) {
+          $.get('/donate/nominations.json', function(results) {
             donateDispatcher.dispatch({
               actionType: 'update-nominated',
               nominations: results,
