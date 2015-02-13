@@ -3,12 +3,16 @@
 
 """
 
+import datetime
+import pytz
+
 from pylons.i18n import N_
 
 from r2.config.routing import not_in_sr
 from r2.lib.js import LocalizedModule
 from r2.lib.plugin import Plugin
 
+ELIGIBLE_DATE_STR = "02/16/2015"
 
 class Donate(Plugin):
     needs_static_build = True
@@ -17,7 +21,7 @@ class Donate(Plugin):
         "DONATE_UNKNOWN_ORGANIZATION":
             N_("unknown organization"),
         "DONATE_ACCOUNT_NOT_ELIGIBLE":
-            N_("account must be created before 2/16/2015"),
+            N_("account must be created before %s" % ELIGIBLE_DATE_STR),
     }
 
     js = {
@@ -72,3 +76,17 @@ class Donate(Plugin):
         from reddit_donate.controllers import (
             DonateController,
         )
+
+        eligible_date = None
+
+        if ELIGIBLE_DATE_STR:
+            try:
+                eligible_date = (
+                    datetime.datetime.strptime(ELIGIBLE_DATE_STR, '%m/%d/%Y')
+                   .replace(tzinfo=pytz.utc)
+                )
+            except ValueError:
+                pass
+
+        self.eligible_date_str = ELIGIBLE_DATE_STR
+        self.eligible_date = eligible_date

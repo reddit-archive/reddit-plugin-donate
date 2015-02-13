@@ -9,12 +9,15 @@
 
     <%
     blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
-    launch_date = "February 16, 2015"
+    eligible_date_str = g.plugins['donate'].eligible_date_str
     %>
 
     %if not c.user_is_loggedin:
       <p>
-        you must&#32;<a class="login-required">log in</a>&#32;<em>and</em>&#32;your account must be created&#32;<strong>before ${launch_date}</strong>
+        you must&#32;<a class="login-required">log in</a>
+        %if eligible_date_str:
+          &#32;<em>and</em>&#32;your account must be created&#32;<strong>before ${eligible_date_str}</strong>
+        %endif
         &#32;to participate in the voting process!
       </p>
       <p>
@@ -32,9 +35,7 @@
       </p>
     %else:
       <p>
-        sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before</em>&#32;the
-        &#32;<a href="${blog_post_url}">announcement blog post</a>&#32;are
-        eligible to vote for charities.
+        sorry, but&#32;<strong>your account is not old enough</strong>&#32;to participate! Only accounts created&#32;<em>before ${eligible_date_str}</em>&#32;are eligible to vote for charities.
       </p>
       <p>
         you can still participate by &#32;<a href="/r/redditdonate">joining
