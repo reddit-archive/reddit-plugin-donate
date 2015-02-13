@@ -453,7 +453,7 @@
             var lowerQuery = query.toLowerCase();
             var apiEndpoint;
             if (type === 'ein') {
-              lowerQuery = lowerQuery.replace(/-/g, '');
+              lowerQuery = lowerQuery.replace(/[^a-z0-9]/g, '');
               apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
               $.get(apiEndpoint, this.handleEINLookup);
             } else {
