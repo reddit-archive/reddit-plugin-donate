@@ -645,6 +645,18 @@
         });
       },
 
+      injectEINLink: function(text) {
+        var einText = r._('EIN/Tax ID');
+        var parts = text.split(einText);
+        var result = [parts[0]];
+        var link = A({ href: EIN_WIKI_LINK }, einText);
+
+        for (var i = 1, l = parts.length; i < l; i++) {
+          result.push(link, parts[i]);
+        }
+        return result;
+      },
+
       render: function() {
         if (LOGGED_IN && !ACCOUNT_IS_ELIGIBLE) {
           return null;
@@ -679,28 +691,16 @@
           var query = searchResults.state.query;
           var message;
 
-          var injectEINLink = function(text) {
-            var einText = r._('EIN/Tax ID');
-            var parts = text.split(einText);
-            var result = [parts[0]];
-            var link = A({ href: EIN_WIKI_LINK }, einText);
-
-            for (var i = 1, l = parts.length; i < l; i++) {
-              result.push(link, parts[i]);
-            }
-            return result;
-          }
-
           if (!viewingSearch) {
             message = r._('you haven\'t voted for any charities yet!');
           } else if (!query || query.trim().length < MIN_QUERY_LENGTH) {
-            message = injectEINLink(r._('enter charity name or EIN/Tax ID!'));
+            message = this.injectEINLink(r._('enter charity name or EIN/Tax ID!'));
           } else if (searchResults.state.queryType === 'ein') {
-            message = injectEINLink(r._('we couldn\'t find the charity with that EIN/Tax ID.  sorry.'));
+            message = this.injectEINLink(r._('we couldn\'t find the charity with that EIN/Tax ID.  sorry.'));
           } else {
             message = [
               P(null, r._('we couldn\'t find any charities by that name.')),
-              Small(null, injectEINLink(r._('make sure you are using the charity\'s full name, or enter their EIN/Tax ID instead!'))),
+              Small(null, this.injectEINLink(r._('make sure you are using the charity\'s full name, or enter their EIN/Tax ID instead!'))),
             ];
           }
 
