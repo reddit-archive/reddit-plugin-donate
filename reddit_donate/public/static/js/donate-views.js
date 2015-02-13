@@ -278,19 +278,11 @@
 
       var tagLine = null;
       if (this.props.Tag_Line) {
-        tagLine = P({
-          className: 'charity-tag-line',
-          dangerouslySetInnerHTML: { __html: this.props.Tag_Line },
-        });
+        tagLine = P({ className: 'charity-tag-line' }, _.unescape(this.props.Tag_Line));
       }
 
       return Div({ className: classes },
-        H2({
-          className: 'charity-name',
-          dangerouslySetInnerHTML: {
-            __html: this.props.DisplayName,
-          },
-        }),
+        H2({ className: 'charity-name' }, _.unescape(this.props.DisplayName)),
         this.props.unloaded ?
           r._('loading...') : null,
         tagLine,
