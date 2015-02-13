@@ -20,7 +20,7 @@
 
   // some config
   var MIN_QUERY_LENGTH = 3;
-  var EIN_QUERY_CHECK = /^[0-9]{3}/;
+  var EIN_QUERY_CHECK = /^[0-9\-]{3}/;
   var LOGGED_IN = r.config.logged;
   var ACCOUNT_IS_ELIGIBLE = r.config.accountIsEligible;
   var SEARCH_DEBOUNCE_TIME = 500;
@@ -438,7 +438,7 @@
         query = query.trim();
         force = force || false;
 
-        var type = EIN_QUERY_CHECK.test(query.replace(/-/g, '')) ? 'ein' : 'name';
+        var type = EIN_QUERY_CHECK.test(query) ? 'ein' : 'name';
 
         if (query && query.length >= MIN_QUERY_LENGTH) {
           this.setState({
