@@ -450,10 +450,9 @@
       _getSearchResults: _.debounce(function(query, force, type) {
         if (query && query.length >= MIN_QUERY_LENGTH) {
           if (type === 'name' || force) {
-            var lowerQuery = query.toLowerCase();
+            var lowerQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '');
             var apiEndpoint;
             if (type === 'ein') {
-              lowerQuery = lowerQuery.replace(/[^a-z0-9]/g, '');
               apiEndpoint = '/donate/organizations/' + lowerQuery + '.json';
               $.get(apiEndpoint, this.handleEINLookup);
             } else {
