@@ -12,7 +12,7 @@ from r2.config.routing import not_in_sr
 from r2.lib.js import LocalizedModule
 from r2.lib.plugin import Plugin
 
-ELIGIBLE_DATE_STR = "02/16/2015"
+ELIGIBLE_DATE_STR = "2015-02-16"
 
 class Donate(Plugin):
     needs_static_build = True
@@ -82,7 +82,7 @@ class Donate(Plugin):
         if ELIGIBLE_DATE_STR:
             try:
                 eligible_date = (
-                    datetime.datetime.strptime(ELIGIBLE_DATE_STR, '%m/%d/%Y')
+                    datetime.datetime.strptime(ELIGIBLE_DATE_STR, '%Y-%m-%d')
                    .replace(tzinfo=pytz.utc)
                 )
             except ValueError:
