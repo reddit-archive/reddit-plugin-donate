@@ -1,5 +1,7 @@
 <%!
   import simplejson
+
+  from r2.lib.template_helpers import static
 %>
 
 <header class="reddit-donate-header md-container">
@@ -61,6 +63,24 @@
 </div>
 
 <footer class="reddit-donate-footer md-container">
+  <div class="reddit-donate-blurbs md">
+    <div class="reddit-donate-blurb">
+      <img src=${static('donate_blurb_1.png')} />
+      <p>reddit will be giving away 10% of our 2014 ad revenue.</p>
+    </div>
+    <div class="reddit-donate-blurb">
+      <img src=${static('donate_blurb_2.png')} />
+      <p>10 charities the community votes on will be given&#32;<strong>$82,765.95</strong>.</p>
+    </div>
+    <div class="reddit-donate-blurb">
+      <img src=${static('donate_blurb_3.png')} />
+      <p>you can vote once per charity, but vote for as many charities as you wish.</p>
+    </div>
+    <div class="reddit-donate-blurb">
+      <img src=${static('donate_blurb_4.png')} />
+      <p>voting ends&#32;<strong>Wed. February 25, 2015</strong>. we'll announce winners within 24 hours.</p>
+    </div>
+  </div>
   <div class="footer-content md">
     <p>in partnership with
       &#32;<a href="http://www.charitynavigator.org/" target="_blank">Charity Navigator</a>.
