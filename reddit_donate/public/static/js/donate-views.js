@@ -108,13 +108,20 @@
     getInitialState: function() {
       return {
         errors: null,
+        isWaiting: false,
       };
     },
 
     handleButtonClick: function() {
+      if (this.state.isWaiting) { return; }
+
       if (this.props.onButtonClick instanceof Function) {
         var ein = this.props.EIN;
         var isNominated = this.props.Nominated;
+
+        this.setState({
+          isWaiting: true,
+        });
 
         this.props.onButtonClick(ein, isNominated, this.setErrors);
       }
@@ -123,6 +130,7 @@
     setErrors: function(errors) {
       this.setState({
         errors: errors && errors.length ? errors : null,
+        isWaiting: false,
       });
     },
 
@@ -134,6 +142,7 @@
         'charity-nominate-button button': true,
         'login-required': !LOGGED_IN,
         'nominated': isNominated,
+        'waiting': this.state.isWaiting,
       });
 
       if (!LOGGED_IN) {
@@ -148,7 +157,9 @@
       } else {
         var buttonText = null;
 
-        if (isNominated) {
+        if (this.state.isWaiting) {
+          buttonText = Span({ className: 'throbber' });
+        } else if (isNominated) {
           buttonText = Span({ className: 'button-group' },
             Span({ className: 'button-text button-text-default' },
               r._('voted!')
@@ -163,7 +174,7 @@
 
         var buttonIcon = null;
 
-        if (isNominated) {
+        if (isNominated && !this.state.isWaiting) {
           buttonIcon =  Div({ className: 'donate-icon checkmark' });
         }
 
