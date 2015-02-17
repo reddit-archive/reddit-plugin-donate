@@ -70,6 +70,7 @@ a {
 
 .reddit-donate-footer .footer-content,
 .reddit-donate-header .header-content,
+.reddit-donate-blurbs,
 .reddit-donate-search {
   max-width: 1024px;
   width: 1024px;
@@ -78,6 +79,7 @@ a {
 @media (max-width: 1024px) {
   .reddit-donate-footer,
   .reddit-donate-header,
+  .reddit-donate-blurbs,
   .reddit-donate-search {
     max-width: 100%;
     width: 100%;
@@ -201,6 +203,27 @@ a {
   border-top: 4px solid @eggshell;
   .footer-content {
     margin: (@margin-large * 1px) auto (@margin-small * 1px);
+  }
+}
+
+.reddit-donate-blurbs {
+  border-bottom: 4px solid @eggshell;
+  margin: (@margin-xx-large * 1px) auto;
+  display: -webkit-flex;
+  display: flex;
+  padding-bottom: (@margin-medium * 1px);
+
+  .reddit-donate-blurb {
+    box-sizing: border-box;
+    -webkit-flex: 0 0 25%;
+    flex: 0 0 25%;
+    padding: 0 (@margin-medium * 1px);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
   }
 }
 
