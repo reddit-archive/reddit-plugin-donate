@@ -55,6 +55,11 @@ a {
   position: relative;
 }
 
+.throbber {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .donate-icon {
   background-repeat: no-repeat;
   background-size: 100%;
@@ -256,11 +261,6 @@ a {
   .search-button {
     font-size: 1.3em;
 
-    .throbber {
-      display: inline-block;
-      vertical-align: middle;
-    }
-
     &.manual {
       .button-style(darken(@green, 5%), @off-white);
     }
@@ -436,6 +436,13 @@ a {
         display: none;
       }
     }
+  }
+
+  &.waiting {
+    // prevents all hover/active styles on the button while showing spinner
+    background: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
   }
 }
 
