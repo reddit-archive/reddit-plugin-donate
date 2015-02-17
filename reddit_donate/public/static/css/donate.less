@@ -1,6 +1,6 @@
 @import "markdown.less";
 @import "components/mixins.less";
-
+@import "components/variables.less";
 
 // button styling from advertising page
 .button-background-style(@color) {
@@ -223,6 +223,30 @@ a {
       display: block;
       width: 100%;
       height: auto;
+      max-width: 250px;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  .reddit-donate-blurbs {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+    .reddit-donate-blurb {
+      -webkit-flex: 0 0 50%;
+      flex: 0 0 50%;
+      margin-bottom: (@margin-small * 1px);
+    }
+  }
+}
+
+@media (max-width: @screen-xs-min) {
+  .reddit-donate-blurbs {
+    .reddit-donate-blurb {
+      -webkit-flex: 0 0 100%;
+      flex: 0 0 100%;
     }
   }
 }
