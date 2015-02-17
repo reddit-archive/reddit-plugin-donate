@@ -155,7 +155,8 @@
       } else if (!ACCOUNT_IS_ELIGIBLE) {
         button = null;
       } else {
-        var buttonText = null;
+        var buttonText;
+        var buttonIcon;
 
         if (this.state.isWaiting) {
           buttonText = Span({ className: 'throbber' });
@@ -172,10 +173,10 @@
           buttonText = r._('vote for this charity');
         }
 
-        var buttonIcon = null;
-
         if (isNominated && !this.state.isWaiting) {
           buttonIcon =  Div({ className: 'donate-icon checkmark' });
+        } else {
+          buttonIcon = null;
         }
 
         button = Button({
