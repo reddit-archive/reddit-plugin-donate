@@ -12,7 +12,7 @@ from r2.config.routing import not_in_sr
 from r2.lib.js import LocalizedModule
 from r2.lib.plugin import Plugin
 
-ELIGIBLE_DATE_STR = "2015-02-16"
+ELIGIBLE_DATE_STR = "2015-02-18"
 
 class Donate(Plugin):
     needs_static_build = True
