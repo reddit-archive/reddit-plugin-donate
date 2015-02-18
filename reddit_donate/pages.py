@@ -14,6 +14,10 @@ class DonatePage(Reddit):
             **kwargs
         )
 
+    def build_toolbars(self):
+        # get rid of tabs on the top
+        return []
+
 
 class DonateLanding(Templated):
     pass
