@@ -1,9 +1,10 @@
-from pylons import c
+from pylons import c, g
 from pylons.i18n import _
 
 from r2.controllers import add_controller
 from r2.controllers.reddit_base import RedditController
 from r2.lib.errors import errors
+from r2.lib.template_helpers import join_urls
 from r2.lib.validator import (
     json_validate,
     validate,
@@ -64,9 +65,22 @@ class DonateController(RedditController):
             eligible=eligible,
         )
 
+        og_data = {
+            "site_name": "reddit.com",
+        }
+
+        if organization:
+            og_data["title"] = "reddit donate: vote for %s" % organization.data["DisplayName"]
+            og_data["url"] = join_urls(g.origin, "donate?organization=%s" % organization.data["EIN"])
+        else:
+            og_data["title"] = "reddit donate: giving 10% back"
+            og_data["url"] = join_urls(g.origin, "donate")
+
+
         return pages.DonatePage(
             title=_("reddit donate"),
             content=content,
+            og_data=og_data,
             extra_js_config={
                 "unloadedNominations": nomination_count,
                 "accountIsEligible": eligible,
