@@ -394,6 +394,26 @@ a {
     border-color: @pale-grey;
   }
 
+  .permalink {
+    .md-font-size(@font-base, @font-x-small, @line-x-small);
+    display: block;
+    opacity: 0.4;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:before {
+      display: inline-block;
+      width: 16px;
+      height: 13px;
+      vertical-align: middle;
+      content: " ";
+      margin-right: @margin-x-small * 1px;
+      background: url(../link.png);
+    }
+  }
+
   .charity-name {
     .md-font-size(@font-base, @font-xx-large, @line-xx-large);
     .md-margins(@font-xx-large, @margin-x-small, @margin-x-small);
@@ -411,7 +431,7 @@ a {
   }
 
   .charity-meta {
-    .md-margins(@font-base, @margin-x-large, @margin-x-small);
+    .md-margins(@font-base, @margin-medium, @margin-small);
 
     border-left: 2px solid @pale-grey;
     list-style-type: none;
