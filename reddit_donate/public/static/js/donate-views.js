@@ -28,6 +28,12 @@
   var CHARITY_NAVIGATOR_BASE_DOMAIN = 'http://www.charitynavigator.org/index.cfm?bay=search.summary&orgid=';
   var EIN_WIKI_LINK = '/r/redditdonate/wiki/index#wiki_what_is_an_ein.2Ftax_id_and_how_do_i_find_it_for_my_favorite_charity.3F';
 
+
+  function getPermalink(ein) {
+    return DOMAIN + '/donate?organization=' + encodeURIComponent(ein);
+  }
+
+
   var CharityCardMetaData = React.createClass({
     displayName: 'CharityCardMetaData',
 
@@ -148,7 +154,7 @@
       if (!LOGGED_IN) {
         button = A({
             className: classes,
-            href: DOMAIN + '/donate?organization=' + encodeURIComponent(this.props.EIN),
+            href: getPermalink(this.props.EIN),
           },
           r._('log in to vote')
         );
@@ -189,7 +195,7 @@
       }
 
       var discussionLink = '/r/redditdonate/submit?' + $.param({
-        url: DOMAIN + '/donate?' + $.param({ organization: this.props.EIN }),
+        url: getPermalink(this.props.EIN),
         title: this.props.DisplayName,
       });
 
@@ -293,11 +299,14 @@
         tagLine = P({ className: 'charity-tag-line' }, _.unescape(this.props.Tag_Line));
       }
 
+      var permalink = getPermalink(this.props.EIN);
+
       return Div({ className: classes },
         H2({ className: 'charity-name' }, _.unescape(this.props.DisplayName)),
         this.props.unloaded ?
           r._('loading...') : null,
         tagLine,
+        A({ className: 'permalink', href: permalink }, permalink),
         this.renderMetaData(),
         this.renderErrors(),
         this.renderButton(),
