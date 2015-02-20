@@ -71,10 +71,10 @@ class DonateController(RedditController):
 
         if organization:
             og_data["title"] = "reddit donate: vote for %s" % organization.data["DisplayName"]
-            og_data["url"] = join_urls(g.origin, c.site.path, "donate?organization=%s" % organization.data["EIN"])
+            og_data["url"] = join_urls(g.origin, "donate?organization=%s" % organization.data["EIN"])
         else:
             og_data["title"] = "reddit donate: giving 10% back"
-            og_data["url"] = join_urls(g.origin, c.site.path, "donate")
+            og_data["url"] = join_urls(g.origin, "donate")
 
 
         return pages.DonatePage(
