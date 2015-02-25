@@ -21,3 +21,7 @@ class DonatePage(Reddit):
 
 class DonateLanding(Templated):
     pass
+
+
+class DonateClosed(Templated):
+    pass

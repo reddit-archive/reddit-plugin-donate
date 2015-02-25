@@ -61,7 +61,7 @@ class Donate(Plugin):
         mc(
             "/donate",
             controller="donate",
-            action="landing",
+            action="closed",
             conditions={"function": not_in_sr},
         )
 

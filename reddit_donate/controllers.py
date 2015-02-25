@@ -47,6 +47,12 @@ def inject_nomination_status(organizations, assume_nominated=False):
 
 @add_controller
 class DonateController(RedditController):
+    def GET_closed(self):
+        return pages.DonatePage(
+            title=_("reddit donate"),
+            content=pages.DonateClosed(),
+        ).render()
+
     @validate(
         eligible=VAccountEligible(),
         organization=VOrganization("organization"),

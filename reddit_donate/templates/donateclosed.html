@@ -1,0 +1,17 @@
+<%!
+  from r2.lib.template_helpers import static
+%>
+
+<header class="reddit-donate-header md-container">
+  <div class="header-content md">
+    <h2>reddit donate</h2>
+    <div class="subtitle">giving 10% back</div>
+
+    <%
+    blog_post_url = "http://www.redditblog.com/2014/02/decimating-our-ads-revenue.html"
+    eligible_date_str = g.plugins['donate'].eligible_date_str
+    %>
+
+    <p>voting has ended! the winning charities will be announced within 48 hours.</p>
+  </div>
+</header>
