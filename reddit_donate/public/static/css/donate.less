@@ -1,6 +1,19 @@
-@import "markdown.less";
 @import "components/mixins.less";
 @import "components/variables.less";
+@import "markdown.less";
+
+// colors used on the donate page
+@donate-color-background: @color-white;
+@donate-color-background-alt: @color-off-white;
+@donate-color-border: @color-eggshell;
+@donate-color-border-light: @color-pale-grey;
+@donate-color-font: @color-semi-black;
+@donate-color-font-light: @color-text-grey;
+@donate-color-font-inverted: @color-off-white;
+@donate-color-highlight: @color-orangered;
+@donate-color-highlight-alt: @color-green;
+@donate-color-disabled: lighten(@color-pale-grey, 10%);
+
 
 // button styling from advertising page
 .button-background-style(@color) {
@@ -20,8 +33,10 @@
 
 .button {
   @unit: 0.7692307692307693em;
+  @button-color-light: darken(@color-white, 5%);
+  @button-color-dark: @color-semi-black;
 
-  .button-style(darken(@white, 5%), @semi-black);
+  .button-style(@button-color-light, @button-color-dark);
 
   display: inline-block;
   margin: 0;
@@ -35,11 +50,11 @@
 
   &:focus {
     outline: 0;
-    box-shadow: inset 0 0 0 1px fadeout(white, 65%);
+    box-shadow: inset 0 0 0 1px fadeout(@button-color-light, 65%);
   }
 
   &:active {
-    box-shadow: inset 0 1px 1px 1px fadeout(black, 90%);
+    box-shadow: inset 0 1px 1px 1px fadeout(@button-color-dark, 90%);
   }
 }
 
@@ -99,9 +114,9 @@ a {
 
   .hdpi-bg-image(@src, @src-2x, ~"308px 131px", repeat-x);
 
-  background-color: @white;
+  background-color: @donate-color-background;
   background-position: 50% -25px;
-  border-bottom: 4px solid @eggshell;
+  border-bottom: 4px solid @donate-color-border;
   overflow: auto;
 }
 
@@ -133,7 +148,7 @@ a {
     .md-font-size(@font-base, @font-xx-large, @line-xx-large);
     .md-margins(@font-xx-large, 0, @margin-x-large);
 
-    color: @text-grey;
+    color: @donate-color-font-light;
     font-weight: normal;
   }
 
@@ -144,8 +159,8 @@ a {
 }
 
 .reddit-donate-nominations {
-  background: @white;
-  border: 3px solid @orangered;
+  background: @donate-color-background;
+  border: 3px solid @donate-color-highlight;
   border-radius: 0;
   box-sizing: border-box;
   font-size: small;
@@ -197,7 +212,7 @@ a {
 
 .reddit-donate-body {
   background-attachment: fixed;
-  background-color: @off-white;
+  background-color: @donate-color-background-alt;
   background-position: center top;
   background-repeat: repeat;
   overflow: auto;
@@ -206,14 +221,14 @@ a {
 }
 
 .reddit-donate-footer {
-  border-top: 4px solid @eggshell;
+  border-top: 4px solid @donate-color-border;
   .footer-content {
     margin: (@margin-large * 1px) auto (@margin-small * 1px);
   }
 }
 
 .reddit-donate-blurbs {
-  border-bottom: 4px solid @eggshell;
+  border-bottom: 4px solid @donate-color-border;
   margin: (@margin-xx-large * 1px) auto;
   display: -webkit-flex;
   display: flex;
@@ -282,7 +297,7 @@ a {
 
     input {
       -webkit-appearance: none;
-      border: 1px solid darken(@eggshell, 10%);
+      border: 1px solid darken(@donate-color-border, 10%);
       font-size: 16px;
       height: 40px;
       left: 0;
@@ -295,12 +310,12 @@ a {
 
     .search-input {
       background: transparent;
-      color: @semi-black;
+      color: @donate-color-font;
       z-index: 100;
     }
 
     .search-input-typeahead {
-      color: lighten(@text-grey, 20%);
+      color: lighten(@donate-color-font-light, 20%);
       z-index: 50;
       pointer-events: none;
     }
@@ -310,14 +325,14 @@ a {
     font-size: 1.3em;
 
     &.manual {
-      .button-style(darken(@green, 5%), @off-white);
+      .button-style(darken(@donate-color-highlight-alt, 5%), @donate-color-font-inverted);
     }
   }
 }
 
 .search-input-subtext,
 .no-search-results .message {
-  color: @text-grey;
+  color: @donate-color-font-light;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -325,7 +340,7 @@ a {
 
 .search-input-subtext {
   padding-bottom: (@margin-small * 1px);
-  border-bottom: 3px solid @pale-grey;
+  border-bottom: 3px solid @donate-color-border-light;
   margin: 0 auto (@margin-small * 1px);
 
   a {
@@ -363,11 +378,11 @@ a {
   @font-base: @font-small;
   @line-base: @line-small;
 
-  background-color: @white;
-  border: 4px solid @eggshell;
+  background-color: @donate-color-background;
+  border: 4px solid @donate-color-border;
   border-radius: 2px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-  color: @text-grey;
+  color: @donate-color-font-light;
   font-family: Helvetica Neue;
   margin: 2em;
   min-height: 200px;
@@ -375,24 +390,15 @@ a {
   position: relative;
 
   &.nominated {
-    @color: lighten(@orangered, 15%);
+    @color: lighten(@donate-color-highlight, 15%);
 
-    background: @white;
     border-color: @color;
     border-radius: 0;
   }
 
-  &.unloaded {
-    background-color: @eggshell;
-
-    .charity-name {
-      color: lighten(@semi-black, 25%);
-    }
-  }
-
   &.error {
-    background-color: lighten(@pale-grey, 10%);
-    border-color: @pale-grey;
+    background-color: @donate-color-disabled;
+    border-color: @donate-color-border-light;
   }
 
   .permalink {
@@ -434,7 +440,7 @@ a {
   .charity-meta {
     .md-margins(@font-base, @margin-medium, @margin-small);
 
-    border-left: 2px solid @pale-grey;
+    border-left: 2px solid @donate-color-border-light;
     list-style-type: none;
     padding-left: ((@margin-large - 2) * 1px);
     padding-right: 200px;
@@ -467,7 +473,7 @@ a {
       .md-font-size(@font-base, @font-x-small, @font-x-small);
       .md-margins(@font-base, 0, @margin-x-small);
 
-      color: lighten(@text-grey, 15%);
+      color: lighten(@donate-color-font-light, 15%);
       display: block;
     }
   }
@@ -494,7 +500,7 @@ a {
     }
 
     &:hover {
-      .button-background-style(@white);
+      .button-background-style(@donate-color-background);
 
       .button-text-hover {
         display: inline;
