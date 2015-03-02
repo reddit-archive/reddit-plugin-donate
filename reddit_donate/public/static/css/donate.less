@@ -72,7 +72,7 @@ a {
   }
 }
 
-
+.reddit-donate-winners,
 .reddit-donate-footer .footer-content,
 .reddit-donate-header .header-content,
 .reddit-donate-blurbs,
@@ -82,6 +82,7 @@ a {
 }
 
 @media (max-width: 1024px) {
+  .reddit-donate-winners,
   .reddit-donate-footer,
   .reddit-donate-header,
   .reddit-donate-blurbs,
@@ -569,4 +570,33 @@ a {
 
 .charity-card-animation-leave-active {
   opacity: 0;
+}
+
+.reddit-donate-winners {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.reddit-donate-winner {
+  -webkit-flex: 0 0 200px;
+  flex: 0 0 200px;
+}
+
+.reddit-donate-winner-name {
+  display: block;
+  text-align: center;
+  margin: 10px 0 20px;
+  font-size: 16px;
+}
+
+.reddit-donate-winner-avatar {
+  display: block;
+  height: 160px;
+  margin: auto;
+  width: auto;
 }
